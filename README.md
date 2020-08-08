@@ -17,7 +17,7 @@ An app to find a partner for your holiday trip either hosting someone at home or
 ### As route planner:
 - As a planner I want to define either a place or a route
 - As a planner I want to define the conditions of the trip
-- As a planner I want to 
+- As a planner I want to define my main interests
 ### As client:
 - As a client I want to contact with a host or planner
 - As a client I want to mark an announcement as favorite
