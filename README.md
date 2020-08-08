@@ -50,4 +50,7 @@ User model:
 ## Links
 ### Trello
 https://trello.com/b/hzEDhsJd/project-mod-3-join-my-trip
-[Trello] (https://trello.com/)
+[Trello]
+### Backend Repository
+https://github.com/dlamo/join-my-trip-backend
+[GitHub]
