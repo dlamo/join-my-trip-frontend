@@ -27,7 +27,7 @@ An app to find a partner for your holiday trip either hosting someone at home or
 - As a user I want to have a profile photo
 - As a user I want to post my past trips
 
-## Routes:
+## Routes
 |Method|URL|Description|
 |---|---|---|
 GET | / | Home page
@@ -36,3 +36,13 @@ POST | /auth/login | Redirects to /profile if user is logged in correctly
 GET | /auth/signup | Renders auth/signup form
 POST | /auth/login | Redirects to /profile if user is registered in correctly
 GET | /profile | Renders profile page
+
+## Models
+User model:
+- username: String
+- password: String
+- email: String,
+- picture: String,
+- country: String,
+- languages: [String]
+- birth: Date
