@@ -46,6 +46,14 @@ User model:
 - country: String,
 - languages: [String]
 - birth: Date
+Home model:
+- user: userId
+- location: [Number, Number]
+- images: [String]
+Trip model:
+- user: userId
+- locations: [[Number, Number]]
+- images: [String]
 
 ## Links
 ### Trello
