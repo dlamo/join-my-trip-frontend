@@ -1,5 +1,5 @@
 # Join My Trip - frontend
-Repository frontend project 3rd module Ironhack
+Repository frontend project Join My Trip
 
 # Developed by
 David de Lamo
