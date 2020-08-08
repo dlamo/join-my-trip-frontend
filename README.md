@@ -46,3 +46,8 @@ User model:
 - country: String,
 - languages: [String]
 - birth: Date
+
+## Links
+### Trello
+https://trello.com/b/hzEDhsJd/project-mod-3-join-my-trip
+[Trello] (https://trello.com/)
