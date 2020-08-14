@@ -1,4 +1,4 @@
-# Join My Trip - frontend
+# Join My Trip - Frontend
 Repository frontend project Join My Trip
 
 # Developed by
