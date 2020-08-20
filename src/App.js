@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
+import AuthCt from './components/AuthCt'
 
 function App() {
   return (
     <div className="App">
-      <h1>Join My Trip</h1>
+      <AuthCt />
     </div>
   );
 }
