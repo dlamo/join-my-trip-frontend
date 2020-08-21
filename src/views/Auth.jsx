@@ -4,6 +4,7 @@ import Home from '../components/Home'
 import Signup from '../components/Signup'
 import Login from '../components/Login'
 import Account from '../components/Account'
+import AccountEdit from '../components/AccountEdit'
 
 function Auth({
     userFormData,
@@ -11,6 +12,7 @@ function Auth({
     handleChange,
     handleSubmitLogin,
     handleSubmitSignup,
+    handleSubmitEdit,
     getUser
 }) {
     return (
@@ -46,6 +48,15 @@ function Auth({
                         <Account {...props} 
                             getUser={getUser} 
                             user={loggedUser} 
+                            />} 
+                    />
+                <Route
+                    path='/account/edit'
+                    render={props => 
+                        <AccountEdit {...props} 
+                        userFormData={userFormData} 
+                        handleChange={handleChange} 
+                        handleSubmitEdit={handleSubmitEdit}
                             />} 
                     />
             </Switch>

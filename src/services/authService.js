@@ -29,10 +29,10 @@ class AuthService {
         .then(response => response.data)
     }
 
-    /*edit = (username, campus, course) => {
-        return this.service.post('/edit', {username, campus, course})
+    edit = (name, country, languages) => {
+        return this.service.put('/edit', {name, country, languages, isCompleted: true})
         .then(response => response.data)
-    }*/
+    }
 
     upload = picture => {
         return this.service.post('/upload', picture)

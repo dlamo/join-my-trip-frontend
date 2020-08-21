@@ -35,7 +35,7 @@ function AuthCt() {
             })
         })
     }
-    const handleSubmitSignup = (e) => {
+    const handleSubmitSignup = e => {
         e.preventDefault()
         const {username, password, email} = userFormData
         service.signup(username, password, email)
@@ -45,6 +45,15 @@ function AuthCt() {
             dispatch({
                 type: INIT_FORM
             })
+        })
+    }
+    const handleSubmitEdit = e => {
+        e.preventDefault()
+        const {name, country, languages} = userFormData
+        service.edit(name, country, languages)
+        .then(response => {
+            getUser(response)
+            history.push('/account')
         })
     }
     const getUser = userObj => {
@@ -57,6 +66,7 @@ function AuthCt() {
             handleChange={handleChange}
             handleSubmitLogin={handleSubmitLogin}
             handleSubmitSignup={handleSubmitSignup}
+            handleSubmitEdit={handleSubmitEdit}
             getUser={getUser}
         />
     )

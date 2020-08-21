@@ -4,7 +4,10 @@ export const INIT_FORM = 'INIT_FORM'
 export const initialState = {
     username: '',
     password: '',
-    email: ''
+    email: '',
+    name: '',
+    country: '',
+    languages: ''
 }
 
 export const authReducer = (state, { type, payload }) => {

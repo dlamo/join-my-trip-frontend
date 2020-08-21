@@ -52,6 +52,8 @@ function Account(props) {
                     <h4>{user.name}</h4>
                     <h5>Country</h5>
                     <h4>{user.country}</h4>
+                    <h5>Languages</h5>
+                    <h4>{user.languages}</h4>
                 </div>
             }
             <button onClick={handleLogout}>Logout</button>
