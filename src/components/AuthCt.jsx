@@ -1,17 +1,17 @@
-import React, { useReducer, useState } from 'react'
+import React, { useReducer, /*useState*/ } from 'react'
 import { useHistory } from 'react-router-dom'
 import AuthService from '../services/authService'
 import {
     initialState,
     authReducer,
     CHANGE_FORM,
-    INIT_FORM
+    //INIT_FORM
 } from '../reducers/authReducer'
 import Auth from '../views/Auth'
 
-function AuthCt() {
+function AuthCt({user, setUser}) {
     const [userFormData, dispatch] = useReducer(authReducer, initialState)
-    const [loggedUser, setLoggedUser] = useState(null)
+    //const [loggedUser, setLoggedUser] = useState(null)
     const service = new AuthService()
     let history = useHistory()
     const handleChange = ({target}) => {
@@ -30,9 +30,9 @@ function AuthCt() {
         .then(response => {
             getUser(response)
             history.push('/account')
-            dispatch({
-                type: INIT_FORM
-            })
+            // dispatch({
+            //     type: INIT_FORM
+            // })
         })
     }
     const handleSubmitSignup = e => {
@@ -42,9 +42,9 @@ function AuthCt() {
         .then(response => {
             getUser(response)
             history.push('/account')
-            dispatch({
-                type: INIT_FORM
-            })
+            // dispatch({
+            //     type: INIT_FORM
+            // })
         })
     }
     const handleSubmitEdit = e => {
@@ -57,12 +57,12 @@ function AuthCt() {
         })
     }
     const getUser = userObj => {
-        setLoggedUser(userObj)
+        setUser(userObj)
     }
     return (
         <Auth
             userFormData={userFormData}
-            loggedUser={loggedUser}
+            loggedUser={user}
             handleChange={handleChange}
             handleSubmitLogin={handleSubmitLogin}
             handleSubmitSignup={handleSubmitSignup}

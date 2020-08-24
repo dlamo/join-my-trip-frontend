@@ -1,6 +1,5 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
-import Home from '../components/Home'
+import { Route } from 'react-router-dom'
 import Signup from '../components/Signup'
 import Login from '../components/Login'
 import Account from '../components/Account'
@@ -17,12 +16,7 @@ function Auth({
 }) {
     return (
         <div>
-            <Switch>
-                <Route 
-                    exact 
-                    path='/' 
-                    component={Home} 
-                    />
+            {/* <Switch> */}
                 <Route 
                     path='/signup'
                     render={props => 
@@ -54,12 +48,12 @@ function Auth({
                     path='/account/edit'
                     render={props => 
                         <AccountEdit {...props} 
-                        userFormData={userFormData} 
-                        handleChange={handleChange} 
-                        handleSubmitEdit={handleSubmitEdit}
+                            userFormData={userFormData} 
+                            handleChange={handleChange} 
+                            handleSubmitEdit={handleSubmitEdit}
                             />} 
                     />
-            </Switch>
+            {/* </Switch> */}
         </div>
     )
 }

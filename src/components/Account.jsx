@@ -31,32 +31,46 @@ function Account(props) {
     }
     return (
         <div>
-            <h1>Welcome to your profile, {user.username}</h1>
-            <img style={{width: "100%"}} src={user.picture} alt="user pic"/>
-            {
-                !clicked ?
-                <button onClick={handleClickEdit}>Edit Photo</button> :
-                <form onSubmit={handleSubmitImage}>
-                    <input type='file' name='image' onChange={handleFileChange}/>
-                    <input className='btn' type='submit' value='Upload photo'/>
-                </form>
-            }
-            {
-                !user.isCompleted ? 
-                <div>
-                    <p>Complete your profile now!</p>
-                    <Link to='/account/edit'>Click here</Link>
-                </div> :
-                <div>
-                    <h5>Name</h5>
-                    <h4>{user.name}</h4>
-                    <h5>Country</h5>
-                    <h4>{user.country}</h4>
-                    <h5>Languages</h5>
-                    <h4>{user.languages}</h4>
-                </div>
-            }
-            <button onClick={handleLogout}>Logout</button>
+            <div>
+                <h1>Welcome to your profile, {user.username}</h1>
+                <img style={{width: "100%"}} src={user.picture} alt="user pic"/>
+                {
+                    !clicked ?
+                    <button onClick={handleClickEdit}>Edit Photo</button> :
+                    <form onSubmit={handleSubmitImage}>
+                        <input type='file' name='image' onChange={handleFileChange}/>
+                        <input className='btn' type='submit' value='Upload photo'/>
+                    </form>
+                }
+                {
+                    !user.isCompleted ? 
+                    <div>
+                        <p>Complete your profile now!</p>
+                        <Link to='/account/edit'>Click here</Link>
+                    </div> :
+                    <div>
+                        <h5>Name</h5>
+                        <h4>{user.name}</h4>
+                        <h5>Country</h5>
+                        <h4>{user.country}</h4>
+                        <h5>Languages</h5>
+                        <h4>{user.languages}</h4>
+                    </div>
+                }
+                <button onClick={handleLogout}>Logout</button>
+            </div>
+            <div>
+                <h2>My Home</h2>
+                {
+                    // Faltaría que se actualizara el user cuando se crea la casa
+                    user.home ?
+                    <p>Your home Id is: {user.home}</p> :
+                    <div>
+                        <p>Start hosting people!</p>
+                        <Link to='home/new'>Create your home</Link>
+                    </div>
+                }
+            </div>
         </div>
     )
 }
