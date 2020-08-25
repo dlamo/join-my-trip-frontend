@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
-import './App.css';
-import { Switch, Route } from 'react-router-dom';
-import Main from './components/Main';
-import AuthCt from './components/AuthCt'
-import NewHome from './components/NewHome';
-import Home from './components/Home';
+import React from 'react'
+import { Switch, Route } from 'react-router-dom'
+import Main from './components/Main'
+import NewHome from './components/NewHome'
+import HomeDetail from './components/HomeDetail'
+import LoginCtx from './components/LoginCtx'
+import AuthDataProvider from './provider/authProvider'
+import SignupCtx from './components/SignupCtx'
+import AccountCtx from './components/AccountCtx'
+import PrivateRoute from './components/PrivateRoute'
+import './App.css'
 
 function App() {
-  const [user, setUser] = useState(null)
   return (
-    <div className='App'>
-      <Switch>
-        <Route exact path='/' component={Main} />
-        <Route exact path='/home/one/:id' render={props => <Home {...props} user={user} />} />
-        <Route exact path='/home/new' render={() => <NewHome user={user} />} />
-        <AuthCt user={user} setUser={setUser} />
-      </Switch>
-    </div>
-  );
+    <AuthDataProvider>
+      <div>
+        <Switch>
+          <Route exact path='/' component={Main} />
+          <Route exact path='/login' component={LoginCtx} />
+          <Route exact path='/signup' component={SignupCtx} />
+          <PrivateRoute exact path='/account' component={AccountCtx} />
+          <PrivateRoute exact path='/home/new' component={NewHome} />
+          <Route exact path='/home/one/:id' component={HomeDetail} />
+        </Switch>
+      </div>
+    </AuthDataProvider>
+  )
 }
 
 export default App;

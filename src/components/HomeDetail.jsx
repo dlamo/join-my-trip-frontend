@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import HomeService from '../services/homeService'
 
-function Home(props) {
-    let service = new HomeService()
+function HomeDetail(props) {
+    const service = new HomeService()
     const initialState = {
         home: {},
         isLoading: true
@@ -18,7 +18,7 @@ function Home(props) {
                 home: response
             })
         })
-    }, [])
+    })
     return (
         <div>
             {
@@ -26,7 +26,6 @@ function Home(props) {
                 <p>Loading home...</p> :
                 <>
                     <h1>{state.home.title}</h1>
-                    {/* <h3>Welcome to {props.user.name}'s home</h3> */}
                     <p>{state.home.description}</p>
                 </>
             }
@@ -34,4 +33,4 @@ function Home(props) {
     )
 }
 
-export default Home
+export default HomeDetail

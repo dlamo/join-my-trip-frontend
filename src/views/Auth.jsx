@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import Signup from '../components/Signup'
-import Login from '../components/Login'
+import Signup from '../components/old/Signup'
+import Login from '../components/old/Login'
 import Account from '../components/Account'
 import AccountEdit from '../components/AccountEdit'
 

@@ -1,13 +1,13 @@
 import React, { useReducer, /*useState*/ } from 'react'
 import { useHistory } from 'react-router-dom'
-import AuthService from '../services/authService'
+import AuthService from '../../services/authService'
 import {
     initialState,
     authReducer,
     CHANGE_FORM,
     //INIT_FORM
-} from '../reducers/authReducer'
-import Auth from '../views/Auth'
+} from '../../reducers/authReducer'
+import Auth from '../../views/Auth'
 
 function AuthCt({user, setUser}) {
     const [userFormData, dispatch] = useReducer(authReducer, initialState)

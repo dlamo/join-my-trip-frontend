@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import HomeService from '../services/homeService'
 import { useHistory } from 'react-router-dom'
+import { useAuthDataContext } from '../provider/authProvider'
 
-function NewHome({user}) {
+function NewHome() {
+    const {user, onLogin} = useAuthDataContext()
     const service = new HomeService()
-    let history = useHistory()
+    const history = useHistory()
     const initialHomeData = {
         title: '',
         description: ''
@@ -22,7 +24,10 @@ function NewHome({user}) {
         const {title, description} = home
         const owner = user._id
         service.create(title, description, owner)
-        .then(() => history.push('/account'))
+        .then(response => {
+            onLogin(response)
+            history.push('/account')
+        })
     }
     return (
         <div>

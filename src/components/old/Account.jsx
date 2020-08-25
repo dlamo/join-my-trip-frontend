@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import AuthService from '../services/authService'
+import { AuthContext } from '../App';
 
 function Account(props) {
+    //Aquí empieza el cambio para context
+    const {state: userState, dispatch} = useContext(AuthContext)
+    const {user} = userState
+    //
     const service = new AuthService()
-    let history = useHistory()
-    const [user, setUser] = useState(props.user)
+    const history = useHistory()
+    //Cambiado
+    //const [user, setUser] = useState(newUser)
     const [clicked, setClicked] = useState(false)
     const [imageFile, setImageFile] = useState(null)
     const handleClickEdit = () => setClicked(true)
@@ -18,15 +24,22 @@ function Account(props) {
         .then(response => {
             setClicked(false)
             setImageFile(null)
-            setUser(response)
-            props.getUser(response)
+            dispatch({
+                type: 'UPLOAD',
+                payload: response
+            })
+            //setUser(response)
+            //props.getUser(response)
         })
     }
     const handleLogout = () => {
         service.logout()
         .then(() => {
             history.push('/')
-            props.getUser(null)
+            dispatch({
+                type: 'LOGOUT'
+            })
+            //props.getUser(null)
         })
     }
     return (
@@ -62,9 +75,12 @@ function Account(props) {
             <div>
                 <h2>My Home</h2>
                 {
-                    // Faltaría que se actualizara el user cuando se crea la casa
                     user.home ?
-                    <p>Your home Id is: {user.home}</p> :
+                    <div>
+                        <p>Your home:</p> 
+                        <Link to={'/home/one/' + user.home}></Link>
+                    </div>
+                    :
                     <div>
                         <p>Start hosting people!</p>
                         <Link to='home/new'>Create your home</Link>
