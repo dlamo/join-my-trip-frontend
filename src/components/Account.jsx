@@ -1,17 +1,12 @@
-import React, { useState, useContext } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useHistory, Link } from 'react-router-dom'
+import { useAuthDataContext } from '../provider/authProvider'
 import AuthService from '../services/authService'
-import { AuthContext } from '../App';
 
-function Account(props) {
-    //Aquí empieza el cambio para context
-    const {state: userState, dispatch} = useContext(AuthContext)
-    const {user} = userState
-    //
+function Account() {
+    const {user, onLogin, onLogout} = useAuthDataContext()
     const service = new AuthService()
     const history = useHistory()
-    //Cambiado
-    //const [user, setUser] = useState(newUser)
     const [clicked, setClicked] = useState(false)
     const [imageFile, setImageFile] = useState(null)
     const handleClickEdit = () => setClicked(true)
@@ -24,28 +19,20 @@ function Account(props) {
         .then(response => {
             setClicked(false)
             setImageFile(null)
-            dispatch({
-                type: 'UPLOAD',
-                payload: response
-            })
-            //setUser(response)
-            //props.getUser(response)
+            onLogin(response)
         })
     }
     const handleLogout = () => {
         service.logout()
         .then(() => {
             history.push('/')
-            dispatch({
-                type: 'LOGOUT'
-            })
-            //props.getUser(null)
+            onLogout()
         })
     }
     return (
         <div>
             <div>
-                <h1>Welcome to your profile, {user.username}</h1>
+                <h1>Welcome, {user.username}</h1>
                 <img style={{width: "100%"}} src={user.picture} alt="user pic"/>
                 {
                     !clicked ?
@@ -62,11 +49,11 @@ function Account(props) {
                         <Link to='/account/edit'>Click here</Link>
                     </div> :
                     <div>
-                        <h5>Name</h5>
+                        <h5><u>Name</u></h5>
                         <h4>{user.name}</h4>
-                        <h5>Country</h5>
+                        <h5><u>Country</u></h5>
                         <h4>{user.country}</h4>
-                        <h5>Languages</h5>
+                        <h5><u>Languages</u></h5>
                         <h4>{user.languages}</h4>
                     </div>
                 }
@@ -78,7 +65,7 @@ function Account(props) {
                     user.home ?
                     <div>
                         <p>Your home:</p> 
-                        <Link to={'/home/one/' + user.home}></Link>
+                        <Link to={'/home/one/' + user.home}>{user.home}</Link>
                     </div>
                     :
                     <div>

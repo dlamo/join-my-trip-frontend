@@ -3,14 +3,14 @@ import { useAuthDataContext } from '../provider/authProvider'
 import { useHistory } from 'react-router-dom'
 import AuthService from '../services/authService'
 
-function SignupCtx() {
+function AccountEdit() {
     const {onLogin} = useAuthDataContext()
     const history = useHistory()
     const service = new AuthService()
     const initialState = {
-        username: '',
-        password: '',
-        email: '',
+        name: '',
+        country: '',
+        languages: '',
         isSubmitting: false
     }
     const [formData, setFormData] = useState(initialState)
@@ -27,8 +27,8 @@ function SignupCtx() {
             ...formData,
             isSubmitting: true
         })
-        const {username, password, email} = formData
-        service.signup(username, password, email)
+        const {name, country, languages} = formData
+        service.edit(name, country, languages)
         .then(response => {
             onLogin(response)
             history.push('/account')
@@ -36,34 +36,34 @@ function SignupCtx() {
     }
     return (
         <div>
-            <h1>Sign up</h1>
+            <h1>Edit your personal data</h1>
             <form onSubmit={handleSubmit}>
-                <label>Username</label>
+                <label>Name</label>
                 <input 
-                    type='text' 
-                    name='username' 
-                    value={formData.username} 
+                    type="text" 
+                    name="name" 
+                    value={formData.name} 
                     onChange={handleChange}
                     />
-                <label>Email</label>
+                <label>Country</label>
                 <input 
-                    type='text' 
-                    name='email' 
-                    value={formData.email} 
+                    type="text" 
+                    name="country" 
+                    value={formData.country} 
                     onChange={handleChange}
                     />
-                <label>Password</label>
+                <label>Languages</label>
                 <input 
-                    type='text' 
-                    name='password' 
-                    value={formData.password} 
+                    type="text" 
+                    name="languages" 
+                    value={formData.languages} 
                     onChange={handleChange}
                     />
-                <button disabled={formData.isSubmitting || !formData.username || !formData.password || !formData.email} >
+                <button disabled={formData.isSubmitting || !formData.name || !formData.country || !formData.languages} >
                     {
                         formData.isSubmitting ?
                         'Loading...' :
-                        'Signup'
+                        'Edit data'
                     }
                 </button>
             </form>
@@ -71,4 +71,4 @@ function SignupCtx() {
     )
 }
 
-export default SignupCtx
+export default AccountEdit

@@ -3,11 +3,12 @@ import { Switch, Route } from 'react-router-dom'
 import Main from './components/Main'
 import NewHome from './components/NewHome'
 import HomeDetail from './components/HomeDetail'
-import LoginCtx from './components/LoginCtx'
+import Login from './components/Login'
 import AuthDataProvider from './provider/authProvider'
-import SignupCtx from './components/SignupCtx'
-import AccountCtx from './components/AccountCtx'
+import Signup from './components/Signup'
+import Account from './components/Account'
 import PrivateRoute from './components/PrivateRoute'
+import AccountEdit from './components/AccountEdit'
 import './App.css'
 
 function App() {
@@ -16,9 +17,10 @@ function App() {
       <div>
         <Switch>
           <Route exact path='/' component={Main} />
-          <Route exact path='/login' component={LoginCtx} />
-          <Route exact path='/signup' component={SignupCtx} />
-          <PrivateRoute exact path='/account' component={AccountCtx} />
+          <Route exact path='/login' component={Login} />
+          <Route exact path='/signup' component={Signup} />
+          <PrivateRoute exact path='/account' component={Account} />
+          <PrivateRoute exact path='/account/edit' component={AccountEdit} />
           <PrivateRoute exact path='/home/new' component={NewHome} />
           <Route exact path='/home/one/:id' component={HomeDetail} />
         </Switch>

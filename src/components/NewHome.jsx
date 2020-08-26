@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import HomeService from '../services/homeService'
 import { useHistory } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
+import HomeService from '../services/homeService'
 
 function NewHome() {
     const {user, onLogin} = useAuthDataContext()
