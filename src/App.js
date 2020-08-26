@@ -22,7 +22,7 @@ function App() {
           <PrivateRoute exact path='/account' component={Account} />
           <PrivateRoute exact path='/account/edit' component={AccountEdit} />
           <PrivateRoute exact path='/home/new' component={NewHome} />
-          <Route exact path='/home/one/:id' component={HomeDetail} />
+          <PrivateRoute exact path='/home/one/:id' component={HomeDetail} />
         </Switch>
       </div>
     </AuthDataProvider>

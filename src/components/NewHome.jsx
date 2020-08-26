@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import HomeService from '../services/homeService'
@@ -9,9 +9,13 @@ function NewHome() {
     const history = useHistory()
     const initialHomeData = {
         title: '',
-        description: ''
+        description: '',
+        picture: '',
+        isSubmittingForm: false,
+        isSubmittingImage: false
     }
     const [home, setHome] = useState(initialHomeData)
+    const [imageFile, setImageFile] = useState(null)
     const handleChange = ({target}) => {
         const {name, value} = target
         setHome({
@@ -19,11 +23,31 @@ function NewHome() {
             [name]: value
         })
     }
+    const handleFileChange = ({target}) => {
+        setHome({
+            ...home,
+            isSubmittingImage: true
+        })
+        setImageFile(target.files[0])
+    }
+    useEffect(() => {
+        const uploadImage = new FormData()
+        uploadImage.append('picture', imageFile)
+        service.upload(uploadImage)
+        .then(response => {
+            console.log(response)
+            setHome(home => ({
+                ...home,
+                isSubmittingImage:false,
+                picture: response
+            }))
+        })
+    }, [imageFile])
     const handleSubmit = e => {
         e.preventDefault()
-        const {title, description} = home
+        const {title, description, picture} = home
         const owner = user._id
-        service.create(title, description, owner)
+        service.create(title, description, picture, owner)
         .then(response => {
             onLogin(response)
             history.push('/account')
@@ -47,7 +71,24 @@ function NewHome() {
                     value={home.description}
                     onChange={handleChange}
                     />
-                <input type='submit' value='Create your home' />
+                {
+                    !home.picture ?
+                    home.isSubmittingImage ?
+                    <p>Loading image...</p> :
+                    <input
+                        type='file'
+                        name='picture'
+                        onChange={handleFileChange}
+                        /> :
+                    <p>Your image has been uploaded!</p>
+                }
+                <button disabled={home.isSubmittingForm || !home.title || !home.description || !home.picture} >
+                    {
+                        home.isSubmittingForm ?
+                        'Loading...' :
+                        'Create your home'
+                    }
+                </button>
             </form>
         </div>
     )

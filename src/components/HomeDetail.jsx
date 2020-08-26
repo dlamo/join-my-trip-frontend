@@ -18,13 +18,15 @@ function HomeDetail(props) {
                 home: response
             })
         })
-    })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     return (
         <div>
             {
                 state.isLoading ?
                 <p>Loading home...</p> :
                 <>
+                    <img style={{width: "100%"}} src={state.home.picture} alt="home pic"/>
                     <h1>{state.home.title}</h1>
                     <p>{state.home.description}</p>
                 </>
