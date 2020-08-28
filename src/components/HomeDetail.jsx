@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom';
-import { useAuthDataContext } from '../provider/authProvider';
+import { useHistory } from 'react-router-dom'
+import { useAuthDataContext } from '../provider/authProvider'
 import HomeService from '../services/homeService'
 
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import 'react-date-range/dist/styles.css' // main style file
+import 'react-date-range/dist/theme/default.css' // theme css file
 import { DateRange } from 'react-date-range'
-import { getDates } from '../tools';
-
-//Ejemplo URL: http://localhost:3000/home/one/5f47f101e753ff05d8ef0315
+import { getDates } from '../tools'
 
 function HomeDetail(props) {
     const service = new HomeService()

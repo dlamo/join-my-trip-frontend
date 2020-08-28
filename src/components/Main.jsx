@@ -8,15 +8,17 @@ function Main() {
         return (
             <div>
                 <h1>Hello, {user.username}!</h1>
-                <Link to='/account'>My Account</Link>
+                <Link to='/account'>My Account</Link><br/>
+                <Link to='/homes'>See all homes</Link>
             </div>
         )
     } else {
         return (
             <div>
                 <h1>Join my trip</h1>
-                <Link to='/signup'>Signup</Link>
-                <Link to='/login'>Login</Link>
+                <Link to='/signup'>Signup</Link><br/>
+                <Link to='/login'>Login</Link><br/>
+                <Link to='/homes'>See all homes</Link>
             </div>
         )
     }
