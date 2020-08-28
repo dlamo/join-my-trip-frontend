@@ -31,17 +31,19 @@ function NewHome() {
         setImageFile(target.files[0])
     }
     useEffect(() => {
-        const uploadImage = new FormData()
-        uploadImage.append('picture', imageFile)
-        service.upload(uploadImage)
-        .then(response => {
-            console.log(response)
-            setHome(home => ({
-                ...home,
-                isSubmittingImage:false,
-                picture: response
-            }))
-        })
+        if (imageFile) {
+            const uploadImage = new FormData()
+            uploadImage.append('picture', imageFile)
+            service.upload(uploadImage)
+            .then(response => {
+                setHome(home => ({
+                    ...home,
+                    isSubmittingImage:false,
+                    picture: response
+                }))
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [imageFile])
     const handleSubmit = e => {
         e.preventDefault()

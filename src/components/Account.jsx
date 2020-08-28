@@ -74,6 +74,20 @@ function Account() {
                     </div>
                 }
             </div>
+            {
+                user.trips &&
+                <div>
+                    <h2>My trips</h2>
+                    <ul>
+                        {
+                            user.trips.map(trip => 
+                                // Moment.js para formatear dates (npm i moment)
+                                <li key={trip._id}>From {trip.dates[0]} to {trip.dates[1]} in this <Link to={'/home/one/' + trip.home}>house</Link></li>
+                            )
+                        }
+                    </ul>
+                </div>  
+            }
         </div>
     )
 }

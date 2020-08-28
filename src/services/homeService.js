@@ -27,6 +27,10 @@ class HomeService {
         return this.service.post('/upload', picture)
         .then(response => response.data)
     }
+    saveDates = (savedDates, id) => {
+        return this.service.put(`/save-dates/${id}`, savedDates)
+        .then(response => response.data)
+    }
 }
 
 export default HomeService
