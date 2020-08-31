@@ -31,6 +31,10 @@ class HomeService {
         return this.service.put(`/save-dates/${id}`, savedDates)
         .then(response => response.data)
     }
+    findLocation = (location) => {
+        return this.service.get('/location?search=' + location)
+        .then(response => response.data)
+    }
 }
 
 export default HomeService
