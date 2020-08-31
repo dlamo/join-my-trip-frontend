@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import HomeService from '../services/homeService'
+import { Container, Carousel, Form, Button } from 'react-bootstrap'
 
 import 'react-date-range/dist/styles.css' // main style file
 import 'react-date-range/dist/theme/default.css' // theme css file
@@ -54,14 +55,30 @@ function HomeDetail(props) {
         })
     }
     return (
-        <div>
+        <Container>
             {
                 state.isLoading ?
                 <p>Loading home...</p> :
                 <>
-                    <img style={{width: "100%"}} src={state.home.picture} alt="home pic"/>
-                    <h1>{state.home.title}</h1>
+                    <Carousel className='my-4'>
+                        {
+                            state.home.pictures.map((pic, i) =>
+                                <Carousel.Item key={i}>
+                                    <img
+                                        className='d-block w-100'
+                                        src={pic}
+                                        alt={`Slide ${i+1}`} />
+                                </Carousel.Item>
+                            )
+                        }
+                    </Carousel>
+                    <h2>{state.home.title}</h2>
                     <p>{state.home.description}</p>
+                    <h4>Conditions</h4>
+                    <ul>
+                        {state.home.conditions.map((c, i) => <li key={i}>{c}</li>)}
+                    </ul>
+                    <h4>Save your dates!</h4>
                     <DateRange
                         editableDateInputs={true}
                         onChange={handleSelect}
@@ -69,12 +86,12 @@ function HomeDetail(props) {
                         ranges={dates}
                         disabledDates={state.disabledDates}
                         />
-                    <form onSubmit={handleSubmitDates}>
-                        <button type='submit'>Save dates!</button>
-                    </form>
+                    <Form onSubmit={handleSubmitDates}>
+                        <Button type='submit'>Save dates!</Button>
+                    </Form>
                 </>
             }
-        </div>
+        </Container>
     )
 }
 

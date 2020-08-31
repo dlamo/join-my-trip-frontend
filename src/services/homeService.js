@@ -9,8 +9,8 @@ class HomeService {
         this.service = service;
     }
 
-    create = (title, description, picture, owner) => {
-        return this.service.post('/', {title, description, picture, owner})
+    create = (title, description, pictures, conditions, owner) => {
+        return this.service.post('/', {title, description, pictures, conditions, owner})
         .then(response => response.data)
     }
 

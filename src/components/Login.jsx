@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import AuthService from '../services/authService'
+import { Container, Form, Button } from 'react-bootstrap'
 
 function Login() {
     const {onLogin} = useAuthDataContext()
@@ -34,32 +35,36 @@ function Login() {
         })
     }
     return (
-        <div>
-            <h1>Log in</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Username</label>
-                <input
-                    type='text'
-                    name='username'
-                    value={formData.username}
-                    onChange={handleChange}
-                    />
-                <label>Password</label>
-                <input
-                    type='text'
-                    name='password'
-                    value={formData.password}
-                    onChange={handleChange}
-                    />
-                <button disabled={formData.isSubmitting || !formData.username || !formData.password} >
+        <Container className='mt-4'>
+            <h2>Log in</h2>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group controlId='formGridUsername'>
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control 
+                        type='text' 
+                        name='username' 
+                        value={formData.username} 
+                        onChange={handleChange}
+                        />
+                </Form.Group>
+                <Form.Group controlId='formGridPassword'>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control 
+                        type='text' 
+                        name='password' 
+                        value={formData.password} 
+                        onChange={handleChange}
+                        />
+                </Form.Group>
+                <Button type='submit' disabled={formData.isSubmitting || !formData.username || !formData.password} >
                     {
                         formData.isSubmitting ?
                         'Loading...' :
                         'Login'
                     }
-                </button>
-            </form>
-        </div>
+                </Button>
+            </Form>
+        </Container>
     )
 }
 

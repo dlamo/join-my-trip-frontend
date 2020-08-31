@@ -23,6 +23,7 @@ function AllHomes() {
     return (
         <>
            {
+                // Quizá sería buena idea en vez de hacerlo como una card, hacerlo como una Media List de Bootstrap
                homes.isLoading ?
                <p>Loading homes...</p> :
                <div>

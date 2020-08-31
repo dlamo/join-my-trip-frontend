@@ -11,11 +11,12 @@ import Account from './components/Account'
 import PrivateRoute from './components/PrivateRoute'
 import AccountEdit from './components/AccountEdit'
 import './App.css'
+import Container from 'react-bootstrap/Container'
 
 function App() {
   return (
     <AuthDataProvider>
-      <div>
+      <Container>
         <Switch>
           <Route exact path='/' component={Main} />
           <Route exact path='/login' component={Login} />
@@ -26,7 +27,7 @@ function App() {
           <PrivateRoute exact path='/home/new' component={NewHome} />
           <PrivateRoute exact path='/home/one/:id' component={HomeDetail} />
         </Switch>
-      </div>
+      </Container>
     </AuthDataProvider>
   )
 }

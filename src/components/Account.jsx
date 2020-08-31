@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useHistory, Link } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import AuthService from '../services/authService'
+import moment from 'moment'
 
 function Account() {
     const {user, onLogin, onLogout} = useAuthDataContext()
@@ -64,8 +65,7 @@ function Account() {
                 {
                     user.home ?
                     <div>
-                        <p>Your home:</p> 
-                        <Link to={'/home/one/' + user.home}>{user.home}</Link>
+                        <Link to={'/home/one/' + user.home}>Visit</Link>
                     </div>
                     :
                     <div>
@@ -81,8 +81,9 @@ function Account() {
                     <ul>
                         {
                             user.trips.map(trip => 
-                                // Moment.js para formatear dates (npm i moment)
-                                <li key={trip._id}>From {trip.dates[0]} to {trip.dates[1]} in this <Link to={'/home/one/' + trip.home}>house</Link></li>
+                                <li key={trip._id}>
+                                    From <b>{moment(trip.dates[0]).format('MMM Do')}</b> to <b>{moment(trip.dates[1]).format('MMM Do')}</b> in this <Link to={'/home/one/' + trip.home}>house</Link>
+                                </li>
                             )
                         }
                     </ul>
