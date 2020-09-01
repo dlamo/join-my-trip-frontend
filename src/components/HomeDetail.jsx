@@ -93,7 +93,7 @@ function HomeDetail(props) {
                     </ul>
                     <h4>Location</h4>
                     <GoogleMapReact 
-                        bootstrapURLKeys={{key: 'AIzaSyARNSV3mHRGsAzaH66KKSmOa5L4lZ5eJTg'}}
+                        bootstrapURLKeys={{key: ''}}
                         defaultCenter={state.home.location.geometry.location}
                         defaultZoom={15} 
                         options={getMapOptions}
