@@ -3,11 +3,12 @@ import { useHistory } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import HomeService from '../services/homeService'
 import { Container, Carousel, Form, Button } from 'react-bootstrap'
-
+import LocationOnIcon from '@material-ui/icons/LocationOn'
+import GoogleMapReact from 'google-map-react'
+import { getDates } from '../tools'
+import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css' // main style file
 import 'react-date-range/dist/theme/default.css' // theme css file
-import { DateRange } from 'react-date-range'
-import { getDates } from '../tools'
 
 function HomeDetail(props) {
     const service = new HomeService()
@@ -34,6 +35,17 @@ function HomeDetail(props) {
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+    // Map settings
+    const getMapOptions = (maps) => {
+        return {
+            disableDefaultUI: false,
+            mapTypeControl: true,
+            streetViewControl: true,
+            styles: [{ featureType: 'poi',
+                elementType: 'labels',
+                stylers: [{ visibility: 'on' }] }],
+        }
+    }
     // Calendar settings
     const selectionRange = {
         startDate: new Date(),
@@ -73,11 +85,20 @@ function HomeDetail(props) {
                         }
                     </Carousel>
                     <h2>{state.home.title}</h2>
+                    <p><LocationOnIcon/>{state.home.location.formatted_address}</p>
                     <p>{state.home.description}</p>
                     <h4>Conditions</h4>
                     <ul>
                         {state.home.conditions.map((c, i) => <li key={i}>{c}</li>)}
                     </ul>
+                    <h4>Location</h4>
+                    <GoogleMapReact 
+                        bootstrapURLKeys={{key: 'AIzaSyARNSV3mHRGsAzaH66KKSmOa5L4lZ5eJTg'}}
+                        defaultCenter={state.home.location.geometry.location}
+                        defaultZoom={15} 
+                        options={getMapOptions}
+                        // style={{width: '100%'}}
+                        />
                     <h4>Save your dates!</h4>
                     <DateRange
                         editableDateInputs={true}

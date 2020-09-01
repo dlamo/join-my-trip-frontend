@@ -5,7 +5,8 @@ import HomeService from '../services/homeService'
 import { Container, Form, Button, InputGroup } from 'react-bootstrap'
 import AddIcon from '@material-ui/icons/Add'
 import ClearIcon from '@material-ui/icons/Clear'
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@material-ui/icons/Search'
+import LocationOnIcon from '@material-ui/icons/LocationOn'
 
 function NewHome() {
     const {user, onLogin} = useAuthDataContext()
@@ -22,7 +23,6 @@ function NewHome() {
         conditions: []
     }
     const [home, setHome] = useState(initialHomeData)
-    const [imageFiles, setImageFiles] = useState([])
     const handleChange = ({target}) => {
         const {name, value} = target
         setHome({
@@ -33,14 +33,15 @@ function NewHome() {
     const handleSubmit = e => {
         e.preventDefault()
         const {title, description, pictures, conditions} = home
+        const homeLocation = location.candidates[0]
         const owner = user._id
-        service.create(title, description, pictures, conditions, owner)
+        service.create(title, description, pictures, conditions, homeLocation, owner)
         .then(response => {
             onLogin(response)
             history.push('/account')
         })
     }
-
+    
     /* CONDITIONS HANDLERS */
     const [condition, setCondition] = useState('')
     const handleChangeCondition = ({target}) => setCondition(target.value)
@@ -55,7 +56,7 @@ function NewHome() {
         // NO PUEDO ACCEDER A LA KEY
         console.log(props)
     }
-
+    
     /* LOCATION HANDLERS */
     const [location, setLocation] = useState({input: '', candidates: []})
     const handleChangeLocation = ({target}) => {
@@ -67,15 +68,15 @@ function NewHome() {
     const handleSearchLocation = () => {
         service.findLocation(location.input)
         .then(response => {
-            console.log(response)
             setLocation({
                 ...location,
                 candidates: response
             })
         })
     }
-
+    
     /* FILE UPLOAD HANDLERS */
+    const [imageFiles, setImageFiles] = useState([])
     const handleFileChange = ({target}) => {
         setHome({
             ...home,
@@ -160,8 +161,9 @@ function NewHome() {
                         </InputGroup.Append>
                     </InputGroup>
                     <Form.Text className='text-muted'>
-                        Tipe the home adress and click the search icon
+                        Tipe the home adress (with/without number) and city and click the search icon
                     </Form.Text>
+                    {location.candidates[0] && <p><LocationOnIcon/>Location has been set to: {location.candidates[0].formatted_address}</p>}
                 </Form.Group>
                 {
                     !home.pictures.length ?
