@@ -9,8 +9,8 @@ class HomeService {
         this.service = service;
     }
 
-    create = (title, description, pictures, conditions, owner) => {
-        return this.service.post('/', {title, description, pictures, conditions, owner})
+    create = (title, description, pictures, conditions, location, owner) => {
+        return this.service.post('/', {title, description, pictures, conditions, location, owner})
         .then(response => response.data)
     }
 
@@ -29,6 +29,10 @@ class HomeService {
     }
     saveDates = (savedDates, id) => {
         return this.service.put(`/save-dates/${id}`, savedDates)
+        .then(response => response.data)
+    }
+    findLocation = (location) => {
+        return this.service.get('/location?search=' + location)
         .then(response => response.data)
     }
 }
