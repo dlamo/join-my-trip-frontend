@@ -40,7 +40,6 @@ function HomeDetail(props) {
         return {
             disableDefaultUI: false,
             mapTypeControl: true,
-            streetViewControl: true,
             styles: [{ featureType: 'poi',
                 elementType: 'labels',
                 stylers: [{ visibility: 'on' }] }],
@@ -85,20 +84,25 @@ function HomeDetail(props) {
                         }
                     </Carousel>
                     <h2>{state.home.title}</h2>
-                    <p><LocationOnIcon/>{state.home.location.formatted_address}</p>
+                    {/* PRUEBA TAMAÑO */}
+                    <span><small><LocationOnIcon/>{state.home.location.formatted_address}</small></span>
+                    <h4>Description</h4>
                     <p>{state.home.description}</p>
                     <h4>Conditions</h4>
                     <ul>
                         {state.home.conditions.map((c, i) => <li key={i}>{c}</li>)}
                     </ul>
                     <h4>Location</h4>
-                    <GoogleMapReact 
-                        // bootstrapURLKeys={{key: ''}}
-                        defaultCenter={state.home.location.geometry.location}
-                        defaultZoom={15} 
-                        options={getMapOptions}
-                        // style={{width: '100%'}}
-                        />
+                    {/* VISIBILITY OK, FALTA AÑADIR MARKER */}
+                    <div className='map-home'> 
+                        {/* <GoogleMapReact 
+                            bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_KEY}}
+                            defaultCenter={state.home.location.geometry.location}
+                            defaultZoom={15} 
+                            options={getMapOptions}
+                            style={{width: '100%', height: '100%', position: 'relative'}}
+                            /> */}
+                    </div>
                     <h4>Save your dates!</h4>
                     <DateRange
                         editableDateInputs={true}
