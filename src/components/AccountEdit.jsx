@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useAuthDataContext } from '../provider/authProvider'
 import { useHistory } from 'react-router-dom'
 import AuthService from '../services/authService'
+import { Container, Form, Button } from 'react-bootstrap'
 
 function AccountEdit() {
     const {onLogin} = useAuthDataContext()
@@ -35,39 +36,48 @@ function AccountEdit() {
         })
     }
     return (
-        <div>
-            <h1>Edit your personal data</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Name</label>
-                <input 
-                    type="text" 
-                    name="name" 
-                    value={formData.name} 
-                    onChange={handleChange}
-                    />
-                <label>Country</label>
-                <input 
-                    type="text" 
-                    name="country" 
-                    value={formData.country} 
-                    onChange={handleChange}
-                    />
-                <label>Languages</label>
-                <input 
-                    type="text" 
-                    name="languages" 
-                    value={formData.languages} 
-                    onChange={handleChange}
-                    />
-                <button disabled={formData.isSubmitting || !formData.name || !formData.country || !formData.languages} >
+        <Container className='mt-4'>
+            <h2>Edit your personal data</h2>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group controlId='formGridName'>
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control 
+                        type='text' 
+                        name='name' 
+                        value={formData.name} 
+                        onChange={handleChange}
+                        />
+                </Form.Group>
+                <Form.Group controlId='formGridCountry'>
+                    <Form.Label>Country</Form.Label>
+                    <Form.Control 
+                        type='text' 
+                        name='country' 
+                        value={formData.country} 
+                        onChange={handleChange}
+                        />
+                </Form.Group>
+                <Form.Group controlId='formGridLanguages'>
+                    <Form.Label>Languages</Form.Label><br/>
+                    <Form.Control 
+                        type='text' 
+                        name='languages' 
+                        value={formData.languages} 
+                        onChange={handleChange}
+                        />
+                    <Form.Text className='text-muted'>
+                        Tipe all the languages you are comfortable talking
+                    </Form.Text>
+                </Form.Group>
+                <Button type='submit' disabled={formData.isSubmitting || !formData.name || !formData.country || !formData.languages} >
                     {
                         formData.isSubmitting ?
                         'Loading...' :
                         'Edit data'
                     }
-                </button>
-            </form>
-        </div>
+                </Button>
+            </Form>
+        </Container>
     )
 }
 

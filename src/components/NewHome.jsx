@@ -52,9 +52,13 @@ function NewHome() {
         })
         setCondition('')
     }
-    const handleDeleteCond = (props) => {
-        // NO PUEDO ACCEDER A LA KEY
-        console.log(props)
+    const handleDeleteCond = (i) => {
+        const newConditions = [...home.conditions]
+        newConditions.splice(i,1)
+        setHome({
+            ...home,
+            conditions: [...newConditions]
+        })
     }
     
     /* LOCATION HANDLERS */
@@ -141,7 +145,7 @@ function NewHome() {
                 <ul>
                     {
                         home.conditions.map((cond, i) => 
-                            <li key={i} onClick={handleDeleteCond}>
+                            <li key={i} onClick={() => handleDeleteCond(i)}>
                                 {cond} <ClearIcon style={{color: 'red'}} />
                             </li>
                         )

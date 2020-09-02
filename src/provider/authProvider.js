@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useMemo, useContext } from 'react'
+import AuthService from '../services/authService'
 
 export const AuthDataContext = createContext(null)
 
@@ -9,12 +10,24 @@ const initialAuthData = {
 
 const AuthDataProvider = props => {
     const [authData, setAuthData] = useState(initialAuthData)
+    const service = new AuthService()
     
     useEffect(() => {
+        // Get the user from localStorage and set it if exists
         const currentUser = JSON.parse(localStorage.getItem('user'))
         if (currentUser) {
             setAuthData({user: currentUser})
+        } else {
+            // In case there is no user in localStorage, check the server if there is an open session
+            service.loggedin()
+            .then((response) => {
+                if (response._id) {
+                    setAuthData({user: response})
+                    localStorage.setItem('user', JSON.stringify(response))
+                }
+            })
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const onLogout = () => {
