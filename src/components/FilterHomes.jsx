@@ -59,7 +59,7 @@ function FilterHomes(props) {
     const [homes, setHomes] = useState([])
     /* MAP SETTINGS */
     const [showMap, setShowMap] = useState(false)
-    const handleShowMap = () => setShowMap(true)
+    const handleShowMap = () => setShowMap(!showMap)
     const getMapOptions = () => {
         return {
             disableDefaultUI: false,
@@ -70,19 +70,24 @@ function FilterHomes(props) {
         }
     }
     // DEFINIR LOS MARCADORES A PARTIR DE LOS RESULTADOS OBTENIDOS
-    // const renderMarkers = (map, maps) => {
-    //     const {lat, lng} = state.home.location.geometry.location
-    //     const position = {
-    //         lat,
-    //         lng
-    //     }
-    //     // eslint-disable-next-line
-    //     const marker = new maps.Marker({
-    //         position,
-    //         map,
-    //         title: state.title
-    //     })
-    // }
+    const renderMarkers = (map, maps) => {
+        homes.map(home => new maps.Marker({
+            position: home.location.geometry.location,
+            map,
+            title: home.title
+        }))
+        // const {lat, lng} = state.home.location.geometry.location
+        // const position = {
+        //     lat,
+        //     lng
+        // }
+        // eslint-disable-next-line
+        // const marker = new maps.Marker({
+        //     position,
+        //     map,
+        //     title: state.title
+        // })
+    }
     return (
         <Container>
             <h2>Homes</h2>
@@ -132,16 +137,18 @@ function FilterHomes(props) {
                 homes.map(home => <HomeCard key={home._id} home={home} />)
             }
             {
-                showMap && <p>Aquí irá el mapa</p>
-                // <GoogleMapReact 
-                //     bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_KEY}}
-                //     defaultCenter={state.home.location.geometry.location}
-                //     defaultZoom={15} 
-                //     options={getMapOptions}
-                //     // style={{width: '100%', height: '100%', position: 'relative'}}
-                //     yesIWantToUseGoogleMapApiInternals
-                //     onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
-                //     />
+                showMap &&
+                <div className='map-home'>
+                    <GoogleMapReact 
+                        bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_KEY}}
+                        defaultCenter={homes[0].location.geometry.location}
+                        defaultZoom={15} 
+                        options={getMapOptions}
+                        style={{width: '100%', height: '100%', position: 'relative'}}
+                        yesIWantToUseGoogleMapApiInternals
+                        onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
+                        />
+                </div>
             }
         </Container>
     )
