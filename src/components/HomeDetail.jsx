@@ -4,11 +4,11 @@ import { useAuthDataContext } from '../provider/authProvider'
 import HomeService from '../services/homeService'
 import { Container, Carousel, Form, Button } from 'react-bootstrap'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
-import GoogleMapReact from 'google-map-react'
 import { getDates } from '../tools'
 import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css' // main style file
 import 'react-date-range/dist/theme/default.css' // theme css file
+import Map from './Map'
 
 function HomeDetail(props) {
     const service = new HomeService()
@@ -25,7 +25,7 @@ function HomeDetail(props) {
         service.getOneHome(id)
         .then(response => {
             const {savedDates} = response
-            const disabledDates = getDates(savedDates).flat()
+            const disabledDates = savedDates.flat()
             setState({
                 ...state,
                 isLoading: false,
@@ -35,16 +35,6 @@ function HomeDetail(props) {
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    // Map settings
-    const getMapOptions = (maps) => {
-        return {
-            disableDefaultUI: false,
-            mapTypeControl: true,
-            styles: [{ featureType: 'poi',
-                elementType: 'labels',
-                stylers: [{ visibility: 'on' }] }],
-        }
-    }
     // Calendar settings
     const selectionRange = {
         startDate: new Date(),
@@ -57,9 +47,10 @@ function HomeDetail(props) {
     }
     const handleSubmitDates = e => {
         e.preventDefault()
-        const savedDates = [dates[0].startDate, dates[0].endDate]
+        const savedDates = [[dates[0].startDate.toISOString(), dates[0].endDate.toISOString()]]
+        const parsedDates = getDates(savedDates).flat()
         const id = state.home._id
-        service.saveDates(savedDates, id)
+        service.saveDates(parsedDates, id)
         .then((response) => {
             onLogin(response)
             history.push('/account')
@@ -93,15 +84,8 @@ function HomeDetail(props) {
                         {state.home.conditions.map((c, i) => <li key={i}>{c}</li>)}
                     </ul>
                     <h4>Location</h4>
-                    {/* VISIBILITY OK, FALTA AÑADIR MARKER */}
                     <div className='map-home'> 
-                        {/* <GoogleMapReact 
-                            bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_KEY}}
-                            defaultCenter={state.home.location.geometry.location}
-                            defaultZoom={15} 
-                            options={getMapOptions}
-                            style={{width: '100%', height: '100%', position: 'relative'}}
-                            /> */}
+                        <Map homes={[state.home]} position='relative' />
                     </div>
                     <h4>Save your dates!</h4>
                     <DateRange

@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom'
 
 function HomeCard({home}) {
     return (
-        <div>
-            <Link to={'/home/one/' + home._id}><h3>{home.title}</h3></Link>
-            <img style={{width: '40vw'}} src={home.picture} alt="home pic"/>
+        <div className='d-flex w-100 justify-content-start mt-3'>
+            <img className='w-25' src={home.pictures[0]} alt="home pic"/>
+            <div className='pl-2'>
+                <Link to={'/home/one/' + home._id}><h5>{home.title}</h5></Link>
+                <p>{home.location.formatted_address}</p>
+            </div>
         </div>
     )
 }
