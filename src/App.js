@@ -10,6 +10,7 @@ import AllHomes from './components/AllHomes'
 import Account from './components/Account'
 import PrivateRoute from './components/PrivateRoute'
 import AccountEdit from './components/AccountEdit'
+import FilterHomes from './components/FilterHomes'
 import './App.css'
 import Container from 'react-bootstrap/Container'
 
@@ -22,6 +23,7 @@ function App() {
           <Route exact path='/login' component={Login} />
           <Route exact path='/signup' component={Signup} />
           <Route exact path='/homes' component={AllHomes} />
+          <Route path='/search' component={FilterHomes} />
           <PrivateRoute exact path='/account' component={Account} />
           <PrivateRoute exact path='/account/edit' component={AccountEdit} />
           <PrivateRoute exact path='/home/new' component={NewHome} />

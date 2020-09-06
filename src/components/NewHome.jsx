@@ -33,7 +33,10 @@ function NewHome() {
     const handleSubmit = e => {
         e.preventDefault()
         const {title, description, pictures, conditions} = home
-        const homeLocation = location.candidates[0]
+        const [homeLocation] = location.candidates
+        const locationData = homeLocation.formatted_address.split(",")
+        homeLocation.country = locationData[locationData.length - 1].trim()
+        homeLocation.region = locationData[locationData.length - 2].trim()
         const owner = user._id
         service.create(title, description, pictures, conditions, homeLocation, owner)
         .then(response => {

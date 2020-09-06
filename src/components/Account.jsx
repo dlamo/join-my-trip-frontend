@@ -30,6 +30,13 @@ function Account() {
             onLogout()
         })
     }
+    const getDatesTrip = (trips) => {
+        return trips.map(trip => {
+            const startDate = new Date(parseInt(trip.dates[0]))
+            const lastDate = new Date(parseInt(trip.dates[trip.dates.length - 1]))
+            return [startDate, lastDate]
+        })
+    }
     return (
         <div>
             <div>
@@ -80,11 +87,12 @@ function Account() {
                     <h2>My trips</h2>
                     <ul>
                         {
-                            user.trips.map(trip => 
-                                <li key={trip._id}>
-                                    From <b>{moment(trip.dates[0]).format('MMM Do')}</b> to <b>{moment(trip.dates[1]).format('MMM Do')}</b> in this <Link to={'/home/one/' + trip.home}>house</Link>
+                            getDatesTrip(user.trips).map((trip, i) =>{
+                                return <li key={i}>
+                                    {/* LINK NO FUNCIONA, GETDATESTRIP SOLO RETORNA DATES CON LO QUE PIERDO HOME */}
+                                    From <b>{moment(trip[0]).format('MMM Do')}</b> to <b>{moment(trip[1]).format('MMM Do')}</b> in this <Link to={'/home/one/' + trip.home}>house</Link>
                                 </li>
-                            )
+                            })
                         }
                     </ul>
                 </div>  

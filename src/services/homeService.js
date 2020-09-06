@@ -35,6 +35,10 @@ class HomeService {
         return this.service.get('/location?search=' + location)
         .then(response => response.data)
     }
+    searchHomes = (city, dates) => {
+        return this.service.post('/search?city=' + city, {dates})
+        .then(response => response.data)
+    }
 }
 
 export default HomeService

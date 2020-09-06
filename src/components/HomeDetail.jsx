@@ -25,7 +25,7 @@ function HomeDetail(props) {
         service.getOneHome(id)
         .then(response => {
             const {savedDates} = response
-            const disabledDates = getDates(savedDates).flat()
+            const disabledDates = savedDates.flat()
             setState({
                 ...state,
                 isLoading: false,
@@ -36,7 +36,7 @@ function HomeDetail(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     // Map settings
-    const getMapOptions = (maps) => {
+    const getMapOptions = () => {
         return {
             disableDefaultUI: false,
             mapTypeControl: true,
@@ -44,6 +44,15 @@ function HomeDetail(props) {
                 elementType: 'labels',
                 stylers: [{ visibility: 'on' }] }],
         }
+    }
+    const renderMarkers = (map, maps) => {
+        const {location} = state.home.location.geometry
+        // eslint-disable-next-line
+        const marker = new maps.Marker({
+            position: location,
+            map,
+            title: state.title
+        })
     }
     // Calendar settings
     const selectionRange = {
@@ -57,9 +66,10 @@ function HomeDetail(props) {
     }
     const handleSubmitDates = e => {
         e.preventDefault()
-        const savedDates = [dates[0].startDate, dates[0].endDate]
+        const savedDates = [[dates[0].startDate.toISOString(), dates[0].endDate.toISOString()]]
+        const parsedDates = getDates(savedDates).flat()
         const id = state.home._id
-        service.saveDates(savedDates, id)
+        service.saveDates(parsedDates, id)
         .then((response) => {
             onLogin(response)
             history.push('/account')
@@ -95,13 +105,15 @@ function HomeDetail(props) {
                     <h4>Location</h4>
                     {/* VISIBILITY OK, FALTA AÑADIR MARKER */}
                     <div className='map-home'> 
-                        {/* <GoogleMapReact 
+                        <GoogleMapReact 
                             bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_KEY}}
                             defaultCenter={state.home.location.geometry.location}
                             defaultZoom={15} 
                             options={getMapOptions}
                             style={{width: '100%', height: '100%', position: 'relative'}}
-                            /> */}
+                            yesIWantToUseGoogleMapApiInternals
+                            onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
+                            />
                     </div>
                     <h4>Save your dates!</h4>
                     <DateRange
