@@ -4,8 +4,8 @@ import { getDates } from '../tools'
 import { Button, Form, Container, InputGroup } from 'react-bootstrap'
 import HomeService from '../services/homeService'
 import HomeCard from './HomeCard'
-import GoogleMapReact from 'google-map-react'
 import { useEffect } from 'react'
+import Map from './Map'
 const queryString = require('query-string')
 
 function FilterHomes(props) {
@@ -60,34 +60,6 @@ function FilterHomes(props) {
     /* MAP SETTINGS */
     const [showMap, setShowMap] = useState(false)
     const handleShowMap = () => setShowMap(!showMap)
-    const getMapOptions = () => {
-        return {
-            disableDefaultUI: false,
-            mapTypeControl: true,
-            styles: [{ featureType: 'poi',
-                elementType: 'labels',
-                stylers: [{ visibility: 'on' }] }],
-        }
-    }
-    // DEFINIR LOS MARCADORES A PARTIR DE LOS RESULTADOS OBTENIDOS
-    const renderMarkers = (map, maps) => {
-        homes.map(home => new maps.Marker({
-            position: home.location.geometry.location,
-            map,
-            title: home.title
-        }))
-        // const {lat, lng} = state.home.location.geometry.location
-        // const position = {
-        //     lat,
-        //     lng
-        // }
-        // eslint-disable-next-line
-        // const marker = new maps.Marker({
-        //     position,
-        //     map,
-        //     title: state.title
-        // })
-    }
     return (
         <Container>
             <h2>Homes</h2>
@@ -138,16 +110,9 @@ function FilterHomes(props) {
             }
             {
                 showMap &&
+                // Cambiar estilos
                 <div className='map-home'>
-                    <GoogleMapReact 
-                        bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_KEY}}
-                        defaultCenter={homes[0].location.geometry.location}
-                        defaultZoom={15} 
-                        options={getMapOptions}
-                        style={{width: '100%', height: '100%', position: 'relative'}}
-                        yesIWantToUseGoogleMapApiInternals
-                        onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
-                        />
+                    <Map homes={homes} position='relative' />
                 </div>
             }
         </Container>

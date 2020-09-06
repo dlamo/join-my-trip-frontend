@@ -4,11 +4,11 @@ import { useAuthDataContext } from '../provider/authProvider'
 import HomeService from '../services/homeService'
 import { Container, Carousel, Form, Button } from 'react-bootstrap'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
-import GoogleMapReact from 'google-map-react'
 import { getDates } from '../tools'
 import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css' // main style file
 import 'react-date-range/dist/theme/default.css' // theme css file
+import Map from './Map'
 
 function HomeDetail(props) {
     const service = new HomeService()
@@ -35,25 +35,6 @@ function HomeDetail(props) {
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    // Map settings
-    const getMapOptions = () => {
-        return {
-            disableDefaultUI: false,
-            mapTypeControl: true,
-            styles: [{ featureType: 'poi',
-                elementType: 'labels',
-                stylers: [{ visibility: 'on' }] }],
-        }
-    }
-    const renderMarkers = (map, maps) => {
-        const {location} = state.home.location.geometry
-        // eslint-disable-next-line
-        const marker = new maps.Marker({
-            position: location,
-            map,
-            title: state.title
-        })
-    }
     // Calendar settings
     const selectionRange = {
         startDate: new Date(),
@@ -103,17 +84,8 @@ function HomeDetail(props) {
                         {state.home.conditions.map((c, i) => <li key={i}>{c}</li>)}
                     </ul>
                     <h4>Location</h4>
-                    {/* VISIBILITY OK, FALTA AÑADIR MARKER */}
                     <div className='map-home'> 
-                        <GoogleMapReact 
-                            bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_KEY}}
-                            defaultCenter={state.home.location.geometry.location}
-                            defaultZoom={15} 
-                            options={getMapOptions}
-                            style={{width: '100%', height: '100%', position: 'relative'}}
-                            yesIWantToUseGoogleMapApiInternals
-                            onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
-                            />
+                        <Map homes={[state.home]} position='relative' />
                     </div>
                     <h4>Save your dates!</h4>
                     <DateRange
