@@ -66,7 +66,7 @@ function FilterHomes(props) {
                 !showCalendar ?
                 <Button className='but-teal' onClick={handleShowCalendar}>Filter by dates</Button>:
                 <>
-                    <Button onClick={handleShowCalendar}>Hide calendar</Button>
+                    <Button className='but-teal' onClick={handleShowCalendar}>Hide calendar</Button>
                     <DateRange
                         editableDateInputs={true}
                         showDateDisplay={false}
@@ -75,7 +75,7 @@ function FilterHomes(props) {
                         ranges={dates}
                         />
                     <Form onSubmit={handleSubmitDates}>
-                        <Button type='submit'>Change dates!</Button>
+                        <Button className='but-teal' type='submit'>Change dates!</Button>
                     </Form>
                 </>
             }
@@ -100,7 +100,7 @@ function FilterHomes(props) {
                                         />
                                 </InputGroup>
                             </Form.Group>
-                            <Button type='submit'>Find Homes at a new city!</Button>
+                            <Button className='but-teal' type='submit'>Find Homes at a new city!</Button>
                         </Form>
                     </>
             }
