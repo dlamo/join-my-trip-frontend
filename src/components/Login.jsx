@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import AuthService from '../services/authService'
-import { Container, Form, Button } from 'react-bootstrap'
+import { Container, Form, Button, Alert } from 'react-bootstrap'
 
 function Login() {
     const {onLogin} = useAuthDataContext()
@@ -11,7 +11,8 @@ function Login() {
     const initialState = {
         username: '',
         password: '',
-        isSubmitting: false
+        isSubmitting: false,
+        error: ''
     }
     const [formData, setFormData] = useState(initialState)
     const handleChange = ({target}) => {
@@ -33,6 +34,12 @@ function Login() {
             onLogin(response)
             history.push('/account')
         })
+        .catch(({response}) => {
+            setFormData({
+                ...formData,
+                error: response.data.message
+            })
+        })
     }
     return (
         <Container className='mt-4'>
@@ -50,13 +57,16 @@ function Login() {
                 <Form.Group controlId='formGridPassword'>
                     <Form.Label>Password</Form.Label>
                     <Form.Control 
-                        type='text' 
+                        type='password' 
                         name='password' 
                         value={formData.password} 
                         onChange={handleChange}
                         />
                 </Form.Group>
-                <Button type='submit' disabled={formData.isSubmitting || !formData.username || !formData.password} >
+                {
+                    formData.error && <Alert variant='danger'>{formData.error}</Alert>
+                }
+                <Button className='but-teal' type='submit' disabled={formData.isSubmitting || !formData.username || !formData.password} >
                     {
                         formData.isSubmitting ?
                         'Loading...' :

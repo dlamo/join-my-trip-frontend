@@ -1,3 +1,75 @@
+/* GENERAL */
+
+h1, h2, h3, h4 {
+  color: teal
+}
+.but-teal {
+  background-color: teal !important;
+  color: white;
+}
+.container, .container-fluid {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* NAV */
+
+nav {
+  background-color: teal;
+}
+nav button {
+  border-color: white !important;
+}
+
+/* MAIN */
+
+.main-banner {
+  background-image: url('https://insiderguides.com.au/wp-content/uploads/2018/11/boys-cellphone-facial-expression-1036804-768x512.jpg');
+  background-size: cover;
+  height: 300px;
+  position: relative;
+}
+.main-banner h1 {
+  position: absolute;
+  top: 20%;
+  left: 25%;
+  font-weight: 700;
+  text-shadow: 2px 2px 8px teal;
+}
+.main-form {
+  background-color: rgba(0, 128, 128, 0.3);
+  padding: 20px;
+}
+.main-form h3 {
+  font-size: 18px;
+}
+
+/* ACCOUNT */
+
+.account-image {
+  margin: 20px 50px;
+  position: relative;
+}
+.account-image img {
+  border-radius: 50%;
+  width: 100%;
+}
+.account-image button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.account-info {
+  position: relative
+}
+.account-info button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+/* MAPS */
+
 .map-home {
   width: 300px;
   height: 300px;
