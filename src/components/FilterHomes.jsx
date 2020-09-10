@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DateRange } from 'react-date-range'
 import { getDates } from '../tools'
 import { Button, Form, Container, InputGroup } from 'react-bootstrap'
 import HomeService from '../services/homeService'
-import HomeCard from './HomeCard'
-import { useEffect } from 'react'
 import Map from './Map'
+import HomeCard from './HomeCard'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 const queryString = require('query-string')
 
 function FilterHomes(props) {
@@ -16,7 +16,6 @@ function FilterHomes(props) {
     useEffect(() => {
         service.searchHomes(city, selectedDates)
         .then(response => {
-            // AÑADIR IF EN CASO DE QUE NO SE OBTENGA NINGÚN RESULTADO
             setHomes(response)
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,9 +64,9 @@ function FilterHomes(props) {
             <h2>Homes</h2>
             {
                 !showCalendar ?
-                <Button onClick={handleShowCalendar}>Filter by dates</Button>:
+                <Button className='but-teal' onClick={handleShowCalendar}>Filter by dates</Button>:
                 <>
-                    <Button onClick={handleShowCalendar}>Hide calendar</Button>
+                    <Button className='but-teal' onClick={handleShowCalendar}>Hide calendar</Button>
                     <DateRange
                         editableDateInputs={true}
                         showDateDisplay={false}
@@ -76,14 +75,14 @@ function FilterHomes(props) {
                         ranges={dates}
                         />
                     <Form onSubmit={handleSubmitDates}>
-                        <Button type='submit'>Change dates!</Button>
+                        <Button className='but-teal' type='submit'>Change dates!</Button>
                     </Form>
                 </>
             }
             {
                 homes.length > 0 ? 
                     <Button 
-                        className='ml-1' 
+                        className='ml-1 but-teal' 
                         variant='success'
                         onClick={handleShowMap}
                         >Show results in a map</Button> :
@@ -101,18 +100,18 @@ function FilterHomes(props) {
                                         />
                                 </InputGroup>
                             </Form.Group>
-                            <Button type='submit'>Find Homes at a new city!</Button>
+                            <Button className='but-teal' type='submit'>Find Homes at a new city!</Button>
                         </Form>
                     </>
             }
             {
-                homes.map(home => <HomeCard key={home._id} home={home} />)
+                homes.map((home, i) => <HomeCard key={home._id} home={home} idx={i+1} />)
             }
             {
                 showMap &&
-                // Cambiar estilos
-                <div className='map-home'>
-                    <Map homes={homes} position='relative' />
+                <div>
+                    <Map homes={homes} position='static' />
+                    <ArrowBackIcon onClick={handleShowMap} className='fixed-top bg-danger' />
                 </div>
             }
         </Container>

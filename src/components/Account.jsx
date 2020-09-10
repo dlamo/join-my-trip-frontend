@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
-import { useHistory, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import AuthService from '../services/authService'
-import moment from 'moment'
+import HomeCard from './HomeCard'
+import TripCard from './TripCard'
+import { Container, Button, Modal, Form, Row, Col } from 'react-bootstrap'
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto'
 
 function Account() {
-    const {user, onLogin, onLogout} = useAuthDataContext()
+    const {user, onLogin} = useAuthDataContext()
     const service = new AuthService()
-    const history = useHistory()
+    /* IMAGE FILE UPLOAD */
     const [clicked, setClicked] = useState(false)
     const [imageFile, setImageFile] = useState(null)
-    const handleClickEdit = () => setClicked(true)
+    const handleClickEdit = () => setClicked(!clicked)
     const handleFileChange = ({target}) => setImageFile(target.files[0])
     const handleSubmitImage = e => {
         e.preventDefault()
@@ -23,81 +26,80 @@ function Account() {
             onLogin(response)
         })
     }
-    const handleLogout = () => {
-        service.logout()
-        .then(() => {
-            history.push('/')
-            onLogout()
-        })
-    }
-    const getDatesTrip = (trips) => {
-        return trips.map(trip => {
-            const startDate = new Date(parseInt(trip.dates[0]))
-            const lastDate = new Date(parseInt(trip.dates[trip.dates.length - 1]))
-            return [startDate, lastDate]
-        })
+    const getTripCards = trips => {
+        return trips.map((trip, i) => <Col key={i} xs={6}>
+            <TripCard trip={trip} />
+        </Col>)
     }
     return (
-        <div>
-            <div>
-                <h1>Welcome, {user.username}</h1>
-                <img style={{width: "100%"}} src={user.picture} alt="user pic"/>
-                {
-                    !clicked ?
-                    <button onClick={handleClickEdit}>Edit Photo</button> :
-                    <form onSubmit={handleSubmitImage}>
-                        <input type='file' name='image' onChange={handleFileChange}/>
-                        <input className='btn' type='submit' value='Upload photo'/>
-                    </form>
-                }
-                {
-                    !user.isCompleted ? 
-                    <div>
-                        <p>Complete your profile now!</p>
-                        <Link to='/account/edit'>Click here</Link>
-                    </div> :
-                    <div>
-                        <h5><u>Name</u></h5>
-                        <h4>{user.name}</h4>
-                        <h5><u>Country</u></h5>
-                        <h4>{user.country}</h4>
-                        <h5><u>Languages</u></h5>
-                        <h4>{user.languages}</h4>
-                    </div>
-                }
-                <button onClick={handleLogout}>Logout</button>
-            </div>
-            <div>
-                <h2>My Home</h2>
+        <>
+            <Container>
+                <h2 className='mt-4'>Welcome, {user.username}</h2>
+                <div className='account-image'>
+                    <img src={user.picture} alt="user pic"/>
+                    {
+                        !clicked ?
+                        <Button className='but-teal' onClick={handleClickEdit}><AddAPhotoIcon/></Button> :
+                        <Modal 
+                            show={clicked} 
+                            dialogClassName='mt-5'
+                            onHide={handleClickEdit}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Upload new picture</Modal.Title>
+                            </Modal.Header>
+                            <Form onSubmit={handleSubmitImage}>
+                                <Modal.Body>
+                                    <Form.Control
+                                        type='file'
+                                        name='image'
+                                        onChange={handleFileChange}
+                                        />
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button type='submit'>Send</Button>
+                                </Modal.Footer>
+                            </Form>
+                        </Modal>
+                    }
+                </div>
+                <div className='account-info'>
+                    <h3>User info</h3>
+                    {
+                        !user.isCompleted ? 
+                        <div>
+                            <p>Your profile is not completed,<br/>
+                            complete it <Link to='/account/edit'>now!</Link></p>
+                        </div> :
+                        <div>
+                            <h6>Name: <b>{user.name}</b></h6>
+                            <h6>Country: <b>{user.country}</b></h6>
+                            <h6>Languages: <b>{user.languages}</b></h6>
+                        </div>
+                    }
+                </div>
+            </Container>
+            <Container>
+                <h3>My Home</h3>
                 {
                     user.home ?
-                    <div>
-                        <Link to={'/home/one/' + user.home}>Visit</Link>
-                    </div>
+                    <HomeCard home={user.home} />
                     :
                     <div>
                         <p>Start hosting people!</p>
                         <Link to='home/new'>Create your home</Link>
                     </div>
                 }
-            </div>
+            </Container>
             {
                 user.trips &&
-                <div>
-                    <h2>My trips</h2>
-                    <ul>
-                        {
-                            getDatesTrip(user.trips).map((trip, i) =>{
-                                return <li key={i}>
-                                    {/* LINK NO FUNCIONA, GETDATESTRIP SOLO RETORNA DATES CON LO QUE PIERDO HOME */}
-                                    From <b>{moment(trip[0]).format('MMM Do')}</b> to <b>{moment(trip[1]).format('MMM Do')}</b> in this <Link to={'/home/one/' + trip.home}>house</Link>
-                                </li>
-                            })
-                        }
-                    </ul>
-                </div>  
+                <Container fluid>
+                    <h3>My trips</h3>
+                    <Row className='flex-nowrap overflow-auto'>
+                        {getTripCards(user.trips)}
+                    </Row>
+                </Container>
             }
-        </div>
+        </>
     )
 }
 

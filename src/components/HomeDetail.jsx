@@ -9,6 +9,7 @@ import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css' // main style file
 import 'react-date-range/dist/theme/default.css' // theme css file
 import Map from './Map'
+import Loader from './Loader'
 
 function HomeDetail(props) {
     const service = new HomeService()
@@ -60,7 +61,7 @@ function HomeDetail(props) {
         <Container>
             {
                 state.isLoading ?
-                <p>Loading home...</p> :
+                <Loader /> :
                 <>
                     <Carousel className='my-4'>
                         {

@@ -69,7 +69,7 @@ function AccountEdit() {
                         Tipe all the languages you are comfortable talking
                     </Form.Text>
                 </Form.Group>
-                <Button type='submit' disabled={formData.isSubmitting || !formData.name || !formData.country || !formData.languages} >
+                <Button className='but-teal' type='submit' disabled={formData.isSubmitting || !formData.name || !formData.country || !formData.languages} >
                     {
                         formData.isSubmitting ?
                         'Loading...' :

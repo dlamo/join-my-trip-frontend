@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import AuthService from '../services/authService'
-import { Container, Form, Button } from 'react-bootstrap'
+import { Container, Form, Button, Alert } from 'react-bootstrap'
 
 function Signup() {
     const {onLogin} = useAuthDataContext()
@@ -12,7 +12,8 @@ function Signup() {
         username: '',
         password: '',
         email: '',
-        isSubmitting: false
+        isSubmitting: false,
+        error: ''
     }
     const [formData, setFormData] = useState(initialState)
     const handleChange = ({target}) => {
@@ -33,6 +34,12 @@ function Signup() {
         .then(response => {
             onLogin(response)
             history.push('/account')
+        })
+        .catch(({response}) => {
+            setFormData({
+                ...formData,
+                error: response.data.message
+            })
         })
     }
     return (
@@ -66,7 +73,10 @@ function Signup() {
                         onChange={handleChange}
                         />
                 </Form.Group>
-                <Button type='submit' disabled={formData.isSubmitting || !formData.username || !formData.password || !formData.email} >
+                {
+                    formData.error && <Alert variant='danger'>{formData.error}</Alert>
+                }
+                <Button className='but-teal' type='submit' disabled={formData.isSubmitting || !formData.username || !formData.password || !formData.email} >
                     {
                         formData.isSubmitting ?
                         'Loading...' :
