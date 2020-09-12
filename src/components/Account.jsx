@@ -26,10 +26,16 @@ function Account() {
             onLogin(response)
         })
     }
+    /* MY TRIPS SECTION */
     const getTripCards = trips => {
-        return trips.map((trip, i) => <Col key={i} xs={6}>
-            <TripCard trip={trip} />
-        </Col>)
+        const currentTime = new Date()
+        const parsedToday = Date.parse(currentTime)
+        return trips
+            .filter(trip => parseInt(trip.dates[trip.dates.length - 1]) > parsedToday)
+            .sort((a, b) => parseInt(a.dates[0]) - parseInt(b.dates[0]))
+            .map((trip, i) => <Col key={i} xs={6}>
+                <TripCard trip={trip} />
+            </Col>)
     }
     return (
         <>
@@ -91,12 +97,13 @@ function Account() {
                 }
             </Container>
             {
-                user.trips &&
+                user.trips.length > 0 &&
                 <Container fluid>
-                    <h3>My trips</h3>
+                    <h3>Next stop!</h3>
                     <Row className='flex-nowrap overflow-auto'>
                         {getTripCards(user.trips)}
                     </Row>
+                    <h4>Past trips</h4><Link to='/account/past-trips'>Click here to remember and post a review!</Link>
                 </Container>
             }
         </>
