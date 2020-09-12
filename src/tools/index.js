@@ -19,6 +19,23 @@ export const getDatesTrip = dates => {
     return [startDate, lastDate]
 }
 
+// Use moment.js to format date
 export const formatDate = date => {
     return moment(date).format('MMM Do')
+}
+
+// Get region and country from a candidate from Google Places API
+export const getLocationData = locations => {
+    // Get the 1st candidate as location
+    const [homeLocation] = locations
+    // Extract country as the last element of the address and region as second to last element
+    const locationData = homeLocation.formatted_address.split(",")
+    homeLocation.country = locationData[locationData.length - 1].trim()
+    const regionName = locationData[locationData.length - 2].trim().split(" ")
+    if (regionName.length > 1) {
+        homeLocation.region = regionName[regionName.length - 1]
+    } else {
+        homeLocation.region = regionName[0]
+    }
+    return homeLocation
 }

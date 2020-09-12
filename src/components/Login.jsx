@@ -24,22 +24,29 @@ function Login() {
     }
     const handleSubmit = e => {
         e.preventDefault()
-        setFormData({
-            ...formData,
-            isSubmitting: true
-        })
-        const {username, password} = formData
-        service.login(username, password)
-        .then(response => {
-            onLogin(response)
-            history.push('/account')
-        })
-        .catch(({response}) => {
+        if (!formData.username || !formData.password) {
             setFormData({
                 ...formData,
-                error: response.data.message
+                error: 'All the fields must be introduced'
             })
-        })
+        } else {
+            setFormData({
+                ...formData,
+                isSubmitting: true
+            })
+            const {username, password} = formData
+            service.login(username, password)
+            .then(response => {
+                onLogin(response)
+                history.push('/account')
+            })
+            .catch(({response}) => {
+                setFormData({
+                    ...formData,
+                    error: response.data.message
+                })
+            })
+        }
     }
     return (
         <Container className='mt-4'>
@@ -66,7 +73,7 @@ function Login() {
                 {
                     formData.error && <Alert variant='danger'>{formData.error}</Alert>
                 }
-                <Button className='but-teal' type='submit' disabled={formData.isSubmitting || !formData.username || !formData.password} >
+                <Button className='but-teal' type='submit' disabled={formData.isSubmitting} >
                     {
                         formData.isSubmitting ?
                         'Loading...' :

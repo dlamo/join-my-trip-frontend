@@ -25,22 +25,29 @@ function Signup() {
     }
     const handleSubmit = e => {
         e.preventDefault()
-        setFormData({
-            ...formData,
-            isSubmitting: true
-        })
-        const {username, password, email} = formData
-        service.signup(username, password, email)
-        .then(response => {
-            onLogin(response)
-            history.push('/account')
-        })
-        .catch(({response}) => {
+        if (!formData.username || !formData.password || !formData.email) {
             setFormData({
                 ...formData,
-                error: response.data.message
+                error: 'All the fields must be introduced'
             })
-        })
+        } else {
+            setFormData({
+                ...formData,
+                isSubmitting: true
+            })
+            const {username, password, email} = formData
+            service.signup(username, password, email)
+            .then(response => {
+                onLogin(response)
+                history.push('/account')
+            })
+            .catch(({response}) => {
+                setFormData({
+                    ...formData,
+                    error: response.data.message
+                })
+            })
+        }
     }
     return (
         <Container className='mt-4'>
@@ -67,7 +74,7 @@ function Signup() {
                 <Form.Group controlId='formGridPassword'>
                     <Form.Label>Password</Form.Label>
                     <Form.Control 
-                        type='text' 
+                        type='password' 
                         name='password' 
                         value={formData.password} 
                         onChange={handleChange}
@@ -76,7 +83,7 @@ function Signup() {
                 {
                     formData.error && <Alert variant='danger'>{formData.error}</Alert>
                 }
-                <Button className='but-teal' type='submit' disabled={formData.isSubmitting || !formData.username || !formData.password || !formData.email} >
+                <Button className='but-teal' type='submit' disabled={formData.isSubmitting} >
                     {
                         formData.isSubmitting ?
                         'Loading...' :

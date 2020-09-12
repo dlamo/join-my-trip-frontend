@@ -9,7 +9,7 @@ function TripCard({trip}) {
     const {home, dates} = trip
     const tripDates = getDatesTrip(dates).map(date => formatDate(date))
     return (
-        <Card>
+        <Card className='trip-card'>
             <Card.Img variant='top' src={home.pictures[0]} />
             <Card.Body>
                 <Card.Title>

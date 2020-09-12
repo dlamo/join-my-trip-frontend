@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useAuthDataContext } from '../provider/authProvider'
 import { useHistory } from 'react-router-dom'
 import AuthService from '../services/authService'
-import { Container, Form, Button } from 'react-bootstrap'
+import { Container, Form, Button, Alert } from 'react-bootstrap'
 
 function AccountEdit() {
     const {onLogin} = useAuthDataContext()
@@ -12,7 +12,8 @@ function AccountEdit() {
         name: '',
         country: '',
         languages: '',
-        isSubmitting: false
+        isSubmitting: false,
+        error: ''
     }
     const [formData, setFormData] = useState(initialState)
     const handleChange = ({target}) => {
@@ -24,16 +25,23 @@ function AccountEdit() {
     }
     const handleSubmit = e => {
         e.preventDefault()
-        setFormData({
-            ...formData,
-            isSubmitting: true
-        })
-        const {name, country, languages} = formData
-        service.edit(name, country, languages)
-        .then(response => {
-            onLogin(response)
-            history.push('/account')
-        })
+        if (!formData.name || !formData.country || !formData.languages) {
+            setFormData({
+                ...formData,
+                error: 'All the fields must be introduced'
+            })
+        } else {
+            setFormData({
+                ...formData,
+                isSubmitting: true
+            })
+            const {name, country, languages} = formData
+            service.edit(name, country, languages)
+            .then(response => {
+                onLogin(response)
+                history.push('/account')
+            })
+        }
     }
     return (
         <Container className='mt-4'>
@@ -69,7 +77,10 @@ function AccountEdit() {
                         Tipe all the languages you are comfortable talking
                     </Form.Text>
                 </Form.Group>
-                <Button className='but-teal' type='submit' disabled={formData.isSubmitting || !formData.name || !formData.country || !formData.languages} >
+                {
+                    formData.error && <Alert variant='danger'>{formData.error}</Alert>
+                }
+                <Button className='but-teal' type='submit' disabled={formData.isSubmitting} >
                     {
                         formData.isSubmitting ?
                         'Loading...' :

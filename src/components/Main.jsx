@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { DateRange } from 'react-date-range'
+import { getDates } from '../tools'
+import Loader from './Loader'
 import { Container, Form, InputGroup, Col, FormControl, Button } from 'react-bootstrap'
 import SearchIcon from '@material-ui/icons/Search'
 import TodayIcon from '@material-ui/icons/Today'
 import EventIcon from '@material-ui/icons/Event'
-import { DateRange } from 'react-date-range'
-import { getDates } from '../tools'
-import Loader from './Loader'
 
 function Main() {
     const history = useHistory()
