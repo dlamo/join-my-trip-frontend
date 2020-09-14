@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { DateRange } from 'react-date-range'
 import { getDates } from '../tools'
@@ -7,8 +7,11 @@ import { Container, Form, InputGroup, Col, FormControl, Button } from 'react-boo
 import SearchIcon from '@material-ui/icons/Search'
 import TodayIcon from '@material-ui/icons/Today'
 import EventIcon from '@material-ui/icons/Event'
+import HomeService from '../services/homeService'
+import HomeCard from './HomeCard'
 
 function Main() {
+    const service = new HomeService()
     const history = useHistory()
     const [search, setSearch] = useState('')
     const handleChangeSearch = ({target}) => setSearch(target.value)
@@ -31,6 +34,20 @@ function Main() {
     }
     const handleConfirmDates = () => {
         setShowCalendar(false)
+    }
+    /* MAIN CARDS LOAD */
+    const [homes, setHomes] = useState([])
+    useEffect(() => {
+        service.getRandomHomes()
+        .then(response => {
+            setHomes(response)
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+    const getMainCards = () => {
+        return !homes.length ?
+        <Loader/> :
+        homes.map((home, i) => <HomeCard key={home._id} home={home}/>)
     }
     return (
         <>
@@ -101,7 +118,11 @@ function Main() {
                     }
                 </Form>
             </Container>
-            <Loader />
+            <Container fluid>
+                <h3>We want to help</h3>
+                <p>If you haven't decided your destination, here are some of our homes...</p>
+                {getMainCards()}
+            </Container>
         </>
     )
 }

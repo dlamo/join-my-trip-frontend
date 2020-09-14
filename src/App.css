@@ -11,6 +11,9 @@ h1, h2, h3, h4 {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+.modal {
+  top: 15%;
+}
 
 /* NAV */
 
@@ -82,10 +85,12 @@ nav button {
   max-height: 100px;
   display: flex;
   align-items: center;
+  border: 1px solid teal;
+  border-radius: 5px;
 }
 .home-card img {
   height: 100px;
-  border-radius: 10%;
+  border-radius: 5px;
 }
 
 /* TRIP CARD */
@@ -98,4 +103,26 @@ nav button {
 }
 .trip-card .card-body {
   padding: 1rem;
+}
+
+/* REVIEWS BOX & CARD */
+
+.review-card {
+  border: 1px solid teal;
+  border-radius: 5px;
+  margin: 5px auto;
+  padding: 5px 10px;
+}
+
+/* FOOTER */
+
+.footer {
+  background-color: teal;
+  color: white;
+  height: 10vh;
+  font-size: smaller;
+  margin-top: 10px;
+}
+.footer p {
+  margin-bottom: 0;
 }

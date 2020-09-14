@@ -48,7 +48,6 @@ function Account() {
                         <Button className='but-teal' onClick={handleClickEdit}><AddAPhotoIcon/></Button> :
                         <Modal 
                             show={clicked} 
-                            dialogClassName='mt-5'
                             onHide={handleClickEdit}>
                             <Modal.Header closeButton>
                                 <Modal.Title>Upload new picture</Modal.Title>
@@ -102,8 +101,9 @@ function Account() {
                     <h3>Next stop!</h3>
                     <Row className='flex-nowrap overflow-auto'>
                         {getTripCards(user.trips)}
-                    </Row>
-                    <h4>Past trips</h4><Link to='/account/past-trips'>Click here to remember and post a review!</Link>
+                    </Row><br/>
+                    <h4>Past trips</h4>
+                    <Link to='/account/past-trips'>Click here to remember and post a review!</Link>
                 </Container>
             }
         </>

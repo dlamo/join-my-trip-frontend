@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import AuthService from '../services/authService'
-import { Container, Form, Button, Alert } from 'react-bootstrap'
+import { Container, Form, Button, Alert, Modal } from 'react-bootstrap'
 
 function Signup() {
     const {onLogin} = useAuthDataContext()
@@ -16,11 +16,13 @@ function Signup() {
         error: ''
     }
     const [formData, setFormData] = useState(initialState)
+    const [showModal, setShowModal] = useState(false)
     const handleChange = ({target}) => {
         const {name, value} = target
         setFormData({
             ...formData,
-            [name]: value
+            [name]: value,
+            error: ''
         })
     }
     const handleSubmit = e => {
@@ -39,7 +41,8 @@ function Signup() {
             service.signup(username, password, email)
             .then(response => {
                 onLogin(response)
-                history.push('/account')
+                setShowModal(true)
+                setTimeout(() => history.push('/account'), 1000)
             })
             .catch(({response}) => {
                 setFormData({
@@ -91,6 +94,13 @@ function Signup() {
                     }
                 </Button>
             </Form>
+            {
+                showModal && 
+                <Modal show={showModal}>
+                    <Modal.Header><Modal.Title>User created successfully!</Modal.Title></Modal.Header>
+                    <Modal.Body>You are being redirected to your profile...</Modal.Body>
+                </Modal>
+            }
         </Container>
     )
 }

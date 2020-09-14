@@ -20,7 +20,8 @@ function AccountEdit() {
         const {name, value} = target
         setFormData({
             ...formData,
-            [name]: value
+            [name]: value,
+            error: ''
         })
     }
     const handleSubmit = e => {

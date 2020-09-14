@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import HomeService from '../services/homeService'
-import { Container, Form, Button, InputGroup, Alert } from 'react-bootstrap'
+import { Container, Form, Button, InputGroup, Alert, Modal } from 'react-bootstrap'
 import AddIcon from '@material-ui/icons/Add'
 import ClearIcon from '@material-ui/icons/Clear'
 import SearchIcon from '@material-ui/icons/Search'
@@ -12,7 +12,6 @@ import { getLocationData } from '../tools'
 function NewHome() {
     const {user, onLogin} = useAuthDataContext()
     const service = new HomeService()
-    const history = useHistory()
     /* MAIN STATE HANDLERS */
     const initialHomeData = {
         title: '',
@@ -93,6 +92,7 @@ function NewHome() {
     }, [imageFiles])
     /* SUBMIT SETTINGS */
     const [showError, setShowError] = useState(false)
+    const [showModal, setShowModal] = useState(false)
     const handleSubmit = e => {
         e.preventDefault()
         if (!home.title || !home.description || !home.pictures.length || !location.candidates.length) {
@@ -104,7 +104,7 @@ function NewHome() {
             service.create(title, description, pictures, conditions, homeLocation, owner)
             .then(response => {
                 onLogin(response)
-                history.push('/account')
+                setShowModal(true)
             })
         }
     }
@@ -197,6 +197,19 @@ function NewHome() {
                     }
                 </Button>
             </Form>
+            {
+                showModal && 
+                <Modal show={showModal}>
+                    <Modal.Header>
+                        <Modal.Title>Home created successfully!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>What do you want to do next?</Modal.Body>
+                    <Modal.Footer>
+                        <Link className='btn but-teal' to='/'>Look for a destination</Link>
+                        <Link className='btn but-teal' to='/account'>Profile</Link>
+                    </Modal.Footer>
+                </Modal>
+            }
         </Container>
     )
 }
