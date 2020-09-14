@@ -10,7 +10,10 @@ import Signup from './components/Signup'
 import Account from './components/Account'
 import PrivateRoute from './components/PrivateRoute'
 import AccountEdit from './components/AccountEdit'
+import PastTrips from './components/PastTrips'
 import FilterHomes from './components/FilterHomes'
+import UserInfo from './components/UserInfo'
+import Footer from './components/Footer'
 import NotFound from './components/NotFound'
 import './App.css'
 
@@ -23,13 +26,16 @@ function App() {
           <Route exact path='/' component={Main} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/signup' component={Signup} />
-          <Route path='/search' component={FilterHomes} />
+          <Route exact path='/search' component={FilterHomes} />
           <PrivateRoute exact path='/account' component={Account} />
           <PrivateRoute exact path='/account/edit' component={AccountEdit} />
+          <PrivateRoute exact path='/account/past-trips' component={PastTrips} />
           <PrivateRoute exact path='/home/new' component={NewHome} />
           <PrivateRoute exact path='/home/one/:id' component={HomeDetail} />
+          <PrivateRoute exact path='/user/:id' component={UserInfo} />
           <Route component={NotFound} />
         </Switch>
+        <Footer />
       </>
     </AuthDataProvider>
   )

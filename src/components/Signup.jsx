@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import AuthService from '../services/authService'
-import { Container, Form, Button, Alert } from 'react-bootstrap'
+import { Container, Form, Button, Alert, Modal } from 'react-bootstrap'
 
 function Signup() {
     const {onLogin} = useAuthDataContext()
@@ -16,31 +16,41 @@ function Signup() {
         error: ''
     }
     const [formData, setFormData] = useState(initialState)
+    const [showModal, setShowModal] = useState(false)
     const handleChange = ({target}) => {
         const {name, value} = target
         setFormData({
             ...formData,
-            [name]: value
+            [name]: value,
+            error: ''
         })
     }
     const handleSubmit = e => {
         e.preventDefault()
-        setFormData({
-            ...formData,
-            isSubmitting: true
-        })
-        const {username, password, email} = formData
-        service.signup(username, password, email)
-        .then(response => {
-            onLogin(response)
-            history.push('/account')
-        })
-        .catch(({response}) => {
+        if (!formData.username || !formData.password || !formData.email) {
             setFormData({
                 ...formData,
-                error: response.data.message
+                error: 'All the fields must be introduced'
             })
-        })
+        } else {
+            setFormData({
+                ...formData,
+                isSubmitting: true
+            })
+            const {username, password, email} = formData
+            service.signup(username, password, email)
+            .then(response => {
+                onLogin(response)
+                setShowModal(true)
+                setTimeout(() => history.push('/account'), 1000)
+            })
+            .catch(({response}) => {
+                setFormData({
+                    ...formData,
+                    error: response.data.message
+                })
+            })
+        }
     }
     return (
         <Container className='mt-4'>
@@ -67,7 +77,7 @@ function Signup() {
                 <Form.Group controlId='formGridPassword'>
                     <Form.Label>Password</Form.Label>
                     <Form.Control 
-                        type='text' 
+                        type='password' 
                         name='password' 
                         value={formData.password} 
                         onChange={handleChange}
@@ -76,7 +86,7 @@ function Signup() {
                 {
                     formData.error && <Alert variant='danger'>{formData.error}</Alert>
                 }
-                <Button className='but-teal' type='submit' disabled={formData.isSubmitting || !formData.username || !formData.password || !formData.email} >
+                <Button className='but-teal' type='submit' disabled={formData.isSubmitting} >
                     {
                         formData.isSubmitting ?
                         'Loading...' :
@@ -84,6 +94,13 @@ function Signup() {
                     }
                 </Button>
             </Form>
+            {
+                showModal && 
+                <Modal show={showModal}>
+                    <Modal.Header><Modal.Title>User created successfully!</Modal.Title></Modal.Header>
+                    <Modal.Body>You are being redirected to your profile...</Modal.Body>
+                </Modal>
+            }
         </Container>
     )
 }

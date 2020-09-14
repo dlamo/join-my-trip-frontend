@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import HomeService from '../services/homeService'
-import { Container, Carousel, Form, Button } from 'react-bootstrap'
+import { Container, Carousel, Form, Button, Modal } from 'react-bootstrap'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
+import EmailIcon from '@material-ui/icons/Email'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { getDates } from '../tools'
 import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css' // main style file
@@ -13,7 +15,7 @@ import Loader from './Loader'
 
 function HomeDetail(props) {
     const service = new HomeService()
-    const {onLogin} = useAuthDataContext()
+    const {user, onLogin} = useAuthDataContext()
     const history = useHistory()
     const initialState = {
         home: {},
@@ -36,7 +38,7 @@ function HomeDetail(props) {
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    // Calendar settings
+    // Calendar & Submit settings
     const selectionRange = {
         startDate: new Date(),
         endDate: new Date(),
@@ -46,6 +48,7 @@ function HomeDetail(props) {
     const handleSelect = ranges => {
         setDates([ranges.selection])
     }
+    const [showModal, setShowModal] = useState(false)
     const handleSubmitDates = e => {
         e.preventDefault()
         const savedDates = [[dates[0].startDate.toISOString(), dates[0].endDate.toISOString()]]
@@ -54,6 +57,24 @@ function HomeDetail(props) {
         service.saveDates(parsedDates, id)
         .then((response) => {
             onLogin(response)
+            setShowModal(true)
+        })
+    }
+    // Email settings
+    const [message, setMessage] = useState('')
+    const handleMessage = ({target}) => setMessage(target.value)
+    const handleSubmitMessage = e => {
+        e.preventDefault()
+        const emailData = {
+            host: state.home.owner,
+            guest: user.username,
+            startDate: dates[0].startDate.toLocaleDateString(),
+            endDate: dates[0].endDate.toLocaleDateString(),
+            message,
+            guestEmail: user.email
+        }
+        service.sendMessage(emailData)
+        .then(response => {
             history.push('/account')
         })
     }
@@ -76,8 +97,17 @@ function HomeDetail(props) {
                         }
                     </Carousel>
                     <h2>{state.home.title}</h2>
-                    {/* PRUEBA TAMAÑO */}
-                    <span><small><LocationOnIcon/>{state.home.location.formatted_address}</small></span>
+                    <span>
+                        <small>
+                            <LocationOnIcon/>{state.home.location.formatted_address}
+                        </small>
+                    </span><br/>
+                    <span>
+                        <small>
+                            <AccountCircleIcon/>
+                            <Link to={'/user/' + state.home.owner}> Visit owner's page</Link>
+                        </small>
+                    </span><br/><br/>
                     <h4>Description</h4>
                     <p>{state.home.description}</p>
                     <h4>Conditions</h4>
@@ -87,7 +117,7 @@ function HomeDetail(props) {
                     <h4>Location</h4>
                     <div className='map-home'> 
                         <Map homes={[state.home]} position='relative' />
-                    </div>
+                    </div><br/>
                     <h4>Save your dates!</h4>
                     <DateRange
                         editableDateInputs={true}
@@ -97,8 +127,29 @@ function HomeDetail(props) {
                         disabledDates={state.disabledDates}
                         />
                     <Form onSubmit={handleSubmitDates}>
-                        <Button type='submit'>Save dates!</Button>
+                        <Button className='but-teal' type='submit'>Save dates!</Button>
                     </Form>
+                    {
+                        showModal &&
+                        <Modal show={showModal}>
+                            <Modal.Header>
+                                <Modal.Title>Pack your bags! Your next destination is set.</Modal.Title>
+                            </Modal.Header>
+                            <Form onSubmit={handleSubmitMessage}>
+                                <Modal.Body>
+                                    Send an email to your host:
+                                    <Form.Control
+                                        type='textarea'
+                                        name='message'
+                                        onChange={handleMessage}
+                                        />
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button className='but-teal' type='submit'><EmailIcon/></Button>
+                                </Modal.Footer>
+                            </Form>
+                        </Modal>
+                    }
                 </>
             }
         </Container>

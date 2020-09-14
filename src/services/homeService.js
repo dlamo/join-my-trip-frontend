@@ -39,6 +39,14 @@ class HomeService {
         return this.service.post('/search?city=' + city, {dates})
         .then(response => response.data)
     }
+    sendMessage = (emailData) => {
+        return this.service.post('/dates-email', {emailData})
+        .then(response => response.data)
+    }
+    getRandomHomes = () => {
+        return this.service.get('/random', {})
+        .then(response => response.data)
+    }
 }
 
 export default HomeService

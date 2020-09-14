@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAuthDataContext } from '../provider/authProvider'
 import AuthService from '../services/authService'
-import { Container, Form, Button, Alert } from 'react-bootstrap'
+import { Container, Form, Button, Alert, Modal } from 'react-bootstrap'
 
 function Login() {
     const {onLogin} = useAuthDataContext()
@@ -15,31 +15,41 @@ function Login() {
         error: ''
     }
     const [formData, setFormData] = useState(initialState)
+    const [showModal, setShowModal] = useState(false)
     const handleChange = ({target}) => {
         const {name, value} = target
         setFormData({
             ...formData,
-            [name]: value
+            [name]: value,
+            error: ''
         })
     }
     const handleSubmit = e => {
         e.preventDefault()
-        setFormData({
-            ...formData,
-            isSubmitting: true
-        })
-        const {username, password} = formData
-        service.login(username, password)
-        .then(response => {
-            onLogin(response)
-            history.push('/account')
-        })
-        .catch(({response}) => {
+        if (!formData.username || !formData.password) {
             setFormData({
                 ...formData,
-                error: response.data.message
+                error: 'All the fields must be introduced'
             })
-        })
+        } else {
+            setFormData({
+                ...formData,
+                isSubmitting: true
+            })
+            const {username, password} = formData
+            service.login(username, password)
+            .then(response => {
+                onLogin(response)
+                setShowModal(true)
+                setTimeout(() => history.push('/account'), 1000)
+            })
+            .catch(({response}) => {
+                setFormData({
+                    ...formData,
+                    error: response.data.message
+                })
+            })
+        }
     }
     return (
         <Container className='mt-4'>
@@ -66,7 +76,7 @@ function Login() {
                 {
                     formData.error && <Alert variant='danger'>{formData.error}</Alert>
                 }
-                <Button className='but-teal' type='submit' disabled={formData.isSubmitting || !formData.username || !formData.password} >
+                <Button className='but-teal' type='submit' disabled={formData.isSubmitting} >
                     {
                         formData.isSubmitting ?
                         'Loading...' :
@@ -74,6 +84,13 @@ function Login() {
                     }
                 </Button>
             </Form>
+            {
+                showModal && 
+                <Modal show={showModal}>
+                    <Modal.Header><Modal.Title>Logged In successfully!</Modal.Title></Modal.Header>
+                    <Modal.Body>You are being redirected to your profile...</Modal.Body>
+                </Modal>
+            }
         </Container>
     )
 }

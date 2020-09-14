@@ -38,6 +38,11 @@ class AuthService {
         return this.service.post('/upload', picture)
         .then(response => response.data)
     }
+
+    getUser = id => {
+        return this.service.get('/user/' + id)
+        .then(response => response.data)
+    }
 }
 
 export default AuthService
