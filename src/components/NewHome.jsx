@@ -109,7 +109,7 @@ function NewHome() {
         }
     }
     return (
-        <Container className='mt-4'>
+        <Container className='mt-4 view-min'>
             <h2>Create your home!</h2>
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId='formGridTitle'>

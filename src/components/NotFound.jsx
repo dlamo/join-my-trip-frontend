@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 function NotFound() {
     return (
-        <Container>
+        <Container className='view-min'>
             <h1>404 - Page Not Found!</h1>
             <Link to='/'>Go Home</Link>
         </Container>

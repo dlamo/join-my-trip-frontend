@@ -6,10 +6,12 @@ import Loader from './Loader'
 import ReviewCard from './ReviewCard'
 import MailOutlineIcon from '@material-ui/icons/MailOutline'
 import EmailIcon from '@material-ui/icons/Email'
+import { useHistory } from 'react-router-dom'
 
 function UserInfo(props) {
     const {user} = useAuthDataContext()
     const service = new AuthService()
+    const history = useHistory()
     const initialState = {
         user: {},
         reviews: [],
@@ -34,6 +36,7 @@ function UserInfo(props) {
         return data.reviews.map((rev, i) => <ReviewCard key={i} review={rev} />)
     }
     const [showModal, setShowModal] = useState(false)
+    const handleShowModal = () => setShowModal(!showModal)
     const [message, setMessage] = useState('')
     const handleMessage = ({target}) => setMessage(target.value)
     const handleSubmitMessage = e => {
@@ -59,8 +62,10 @@ function UserInfo(props) {
                         <img src={data.user.picture} alt="user pic"/>
                         {
                             !showModal ?
-                            <Button className='btn-danger'>Mail <MailOutlineIcon/></Button> :
-                            <Modal show={showModal}>
+                            <Button onClick={handleShowModal} className='btn-danger'>Mail <MailOutlineIcon/></Button> :
+                            <Modal 
+                                show={showModal}
+                                onHide={handleShowModal}>
                                 <Modal.Header>
                                     <Modal.Title>Ask the user a question</Modal.Title>
                                 </Modal.Header>

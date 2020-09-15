@@ -5,7 +5,6 @@ import { Button, Form, Container, InputGroup } from 'react-bootstrap'
 import HomeService from '../services/homeService'
 import Map from './Map'
 import HomeCard from './HomeCard'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 const queryString = require('query-string')
 
 function FilterHomes(props) {
@@ -60,11 +59,11 @@ function FilterHomes(props) {
     const [showMap, setShowMap] = useState(false)
     const handleShowMap = () => setShowMap(!showMap)
     return (
-        <Container>
+        <Container className='view-min'>
             <h2>Homes</h2>
             {
                 !showCalendar ?
-                <Button className='but-teal' onClick={handleShowCalendar}>Filter by dates</Button>:
+                <Button className='but-teal' onClick={handleShowCalendar}>Select dates</Button>:
                 <>
                     <Button className='but-teal' onClick={handleShowCalendar}>Hide calendar</Button>
                     <DateRange
@@ -87,7 +86,7 @@ function FilterHomes(props) {
                         onClick={handleShowMap}
                         >Show results in a map</Button> :
                     <>
-                        <p>Ups! There're no homes available in these dates</p>
+                        <p>Ups! There are no results...</p>
                         <p>You should try another city or dates</p>
                         <Form onSubmit={handleSubmitCity}>
                             <Form.Group>
@@ -97,6 +96,7 @@ function FilterHomes(props) {
                                         name='search'
                                         value={search}
                                         onChange={handleChangeSearch}
+                                        placeholder='Type a new city'
                                         />
                                 </InputGroup>
                             </Form.Group>
@@ -105,14 +105,13 @@ function FilterHomes(props) {
                     </>
             }
             {
-                homes.map((home, i) => <HomeCard key={home._id} home={home} idx={i+1} />)
+                showMap &&
+                <div className='map-home'> 
+                    <Map homes={homes} position='relative' />
+                </div>
             }
             {
-                showMap &&
-                <div>
-                    <Map homes={homes} position='static' />
-                    <ArrowBackIcon onClick={handleShowMap} className='fixed-top bg-danger' />
-                </div>
+                homes.map((home, i) => <HomeCard key={home._id} home={home} idx={i+1} />)
             }
         </Container>
     )
