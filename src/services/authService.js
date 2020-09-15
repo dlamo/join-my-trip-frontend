@@ -43,6 +43,10 @@ class AuthService {
         return this.service.get('/user/' + id)
         .then(response => response.data)
     }
+    sendMessage = (emailData) => {
+        return this.service.post('/user-email', {emailData})
+        .then(response => response.data)
+    }
 }
 
 export default AuthService

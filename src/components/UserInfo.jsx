@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Modal } from 'react-bootstrap'
+import { Button, Container, Form, Modal } from 'react-bootstrap'
+import { useAuthDataContext } from '../provider/authProvider'
 import AuthService from '../services/authService'
 import Loader from './Loader'
-import MailOutlineIcon from '@material-ui/icons/MailOutline'
 import ReviewCard from './ReviewCard'
+import MailOutlineIcon from '@material-ui/icons/MailOutline'
+import EmailIcon from '@material-ui/icons/Email'
 
 function UserInfo(props) {
+    const {user} = useAuthDataContext()
     const service = new AuthService()
     const initialState = {
         user: {},
@@ -30,6 +33,23 @@ function UserInfo(props) {
     const getReviews = () => {
         return data.reviews.map((rev, i) => <ReviewCard key={i} review={rev} />)
     }
+    const [showModal, setShowModal] = useState(false)
+    const [message, setMessage] = useState('')
+    const handleMessage = ({target}) => setMessage(target.value)
+    const handleSubmitMessage = e => {
+        e.preventDefault()
+        const emailData = {
+            host: data.user.username,
+            user: user.username,
+            message: message,
+            guestEmail: user.email,
+            hostEmail: data.user.email
+        }
+        service.sendMessage(emailData)
+        .then(response => {
+            history.push('/account')
+        })
+    }
     return (
         <Container>
             {
@@ -38,10 +58,25 @@ function UserInfo(props) {
                     <div className='account-image'>
                         <img src={data.user.picture} alt="user pic"/>
                         {
-                            true ?
+                            !showModal ?
                             <Button className='btn-danger'>Mail <MailOutlineIcon/></Button> :
-                            <Modal>
-                                {/* AÑADIR MODAL EMAIL */}
+                            <Modal show={showModal}>
+                                <Modal.Header>
+                                    <Modal.Title>Ask the user a question</Modal.Title>
+                                </Modal.Header>
+                                <Form onSubmit={handleSubmitMessage}>
+                                    <Modal.Body>
+                                        Type your question:
+                                        <Form.Control
+                                            type='textarea'
+                                            name='message'
+                                            onChange={handleMessage}
+                                            />
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button className='but-teal' type='submit'><EmailIcon/></Button>
+                                    </Modal.Footer>
+                                </Form>
                             </Modal>
                         }
                     </div>
