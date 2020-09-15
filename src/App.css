@@ -76,7 +76,7 @@ nav button {
 .map-home {
   width: 300px;
   height: 300px;
-  margin: 0 auto;
+  margin: 10px auto;
 }
 
 /* HOME CARD */
@@ -91,6 +91,7 @@ nav button {
 .home-card img {
   height: 100px;
   border-radius: 5px;
+  padding: 1px 0;
 }
 
 /* TRIP CARD */
@@ -125,4 +126,8 @@ nav button {
 }
 .footer p {
   margin-bottom: 0;
+}
+
+.view-min {
+  min-height: 78vh;
 }
