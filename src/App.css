@@ -52,15 +52,18 @@ nav button {
 .account-image {
   margin: 20px 50px;
   position: relative;
+  text-align: center;
 }
 .account-image img {
   border-radius: 50%;
-  width: 100%;
+  max-height: 25vh;
+  max-width: 50vw;
+  margin: 0 auto;
 }
 .account-image button {
   position: absolute;
   bottom: 0;
-  right: 0;
+  right: 15%;
 }
 .account-info {
   position: relative
@@ -130,4 +133,10 @@ nav button {
 
 .view-min {
   min-height: 79vh;
+}
+
+/* CAROUSEL */
+
+.carousel-item {
+  height: 22vh;
 }
